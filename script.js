@@ -723,7 +723,7 @@ function useDefaultData() {
         pricing: [
             {
                 name: "Free",
-                price: "0",
+                price: "FREE",
                 period: "lifetime",
                 features: [
                     "1 Account",
