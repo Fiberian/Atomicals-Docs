@@ -1,4 +1,4 @@
-// Enhanced Atomic Hub Script with macOS-style Animations
+// PUSINK GUE NGENTOTTT, YANG BACA KEK KONTOLL!@
 
 document.addEventListener('DOMContentLoaded', function() {
     initEnhancedCursor();
