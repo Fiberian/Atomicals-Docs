@@ -227,10 +227,10 @@ function initHeroAnimations() {
     const typingText = document.querySelector('.typing-text');
     if (typingText) {
         const phrases = [
-            'Quantum-Powered CDID Processing',
-            'Next-Gen Security Architecture',
-            'Liquid Glass Computing',
-            'AI-Driven Performance'
+            '#1CDIDSCRIPT',
+            'Atomic Hub #1',
+            'Better Autofarm',
+            'Better Performance'
         ];
         
         let phraseIndex = 0;
@@ -660,32 +660,32 @@ function useDefaultData() {
             {
                 icon: "⚡",
                 title: "Lightning Fast",
-                description: "Script kita tidak membuat device kamu lemot/lag"
+                description: "Our script won’t slow down or lag your device."
             },
             {
                 icon: "🔒",
                 title: "Quantum Security",
-                description: "Cape script kamu tidak aman? tenang, script kami sudah terbukti aman selama 2 tahun dan first hub yang bisa bypass anti cheatnya!"
+                description: "Worried your script isn’t safe? Don’t worry—ours has been proven secure for 2 years and is the first hub to bypass anti-cheat systems!"
             },
             {
                 icon: "🌍",
-                title: "Dipercaya",
-                description: "Hub kami memiliki buyer sebesar 1.600+, dan sudah dipercaya selama 2 tahun."
+                title: "Trusted",
+                description: "Our hub has over 1,600 buyers and has been trusted for 2 years."
             },
             {
                 icon: "🎯",
                 title: "99.9% Uptime",
-                description: "Script kami selalu online 24/7, tidak ada downtime"
+                description: "Our script is always online 24/7—no downtime at all."
             },
             {
                 icon: "🛠️",
-                title: "Selalu Update",
-                description: "Cape hub kamu jarang update? tenang, kami selalu update setiap ada update setiap harinya!"
+                title: "Always Updated",
+                description: "Tired of hubs that rarely update? Don’t worry—we update daily whenever there’s a new game update!"
             },
             {
                 icon: "💬",
                 title: "Fast Support",
-                description: "Kami memiliki tim support yang siap membantu kamu 24/7, tidak ada lagi masalah yang tidak teratasi!"
+                description: "We have a support team ready 24/7—no more unresolved issues!"
             }
         ],
         benefits: [
@@ -693,7 +693,7 @@ function useDefaultData() {
                 icon: "🚀",
                 title: "Next-Gen Performance",
                 points: [
-                    "Not making devices slow",
+                    "Doesn't slow down devices",
                     "AI-powered optimization",
                     "Fast Autofarm",
                     "Anti CPU Leak Technology"
@@ -703,15 +703,15 @@ function useDefaultData() {
                 icon: "💎",
                 title: "Premium Features",
                 points: [
-                    "5 Billion+ Only 1 hour",
+                    "5 Billion+ in just 1 hour",
                     "Webhook integration",
                     "Better UI",
-                    "Better Autofarm Panel"
+                    "Improved Autofarm Panel"
                 ]
             },
             {
                 icon: "📊",
-                title: "Many Features",
+                title: "Tons of Features",
                 points: [
                     "Truck Autofarm",
                     "Minigame Autofarm",
@@ -727,7 +727,7 @@ function useDefaultData() {
                 period: "lifetime",
                 features: [
                     "1 Account",
-                    "1 HWIDs",
+                    "1 HWID",
                     "Slow Autofarm",
                     "Basic Support",
                     "Limited Features"
@@ -743,7 +743,7 @@ function useDefaultData() {
                     "10 HWIDs",
                     "Priority support",
                     "Fast Autofarm",
-                    "AI Autofarm, More safe and stable"
+                    "AI-powered Autofarm, safer and more stable"
                 ],
                 cta: "Most Popular"
             },
@@ -754,16 +754,16 @@ function useDefaultData() {
                 features: [
                     "Unlimited accounts",
                     "Unlimited HWIDs",
-                    "No Reset HWID Needed",
+                    "No HWID Reset Needed",
                     "Sharing Allowed",
-                    "Lite Version",
+                    "Lite Version Access",
                     "Super Stable",
-                    "Anti Force Close Technology",
+                    "Anti Force Close Technology"
                 ],
                 cta: "Contact Sales"
             }
         ],
-        testimonials: [
+testimonials: [
             {
                 name: "kecikthejago",
                 role: "Customer",
@@ -840,23 +840,23 @@ function useDefaultData() {
         faq: [
             {
                 question: "What is Atomic Hub CDID?",
-                answer: "Atomic Hub CDID adalah script CDID yang terbaik, tercepat, dan teraman di Indonesia. Script kami terpercaya selama 2 tahun!."
+                answer: "Atomic Hub CDID is the best, fastest, and safest CDID script in Indonesia. Trusted for over 2 years!"
             },
             {
-                question: "Berapakah earning yang saya dapatkan saat autofarm?",
-                answer: "Jika anda tidak mempunyai gamepass (50% Job Earnings), anda hanya akan mendapatkan 3 Miliar+ dalam 1 jam. Jika anda mempunyai gamepass (50% Job Earnings), anda akan mendapatkan 5 Miliar+ dalam 1 jam."
+                question: "How much can I earn from autofarm?",
+                answer: "Without the gamepass (50% Job Earnings), you’ll earn over 3 billion per hour. With the gamepass, over 5 billion per hour."
             },
             {
-                question: "Apakah script ini aman digunakan?",
-                answer: "Ya, script kami sudah terbukti aman selama 2 tahun dan sudah banyak yang menggunakan. Kami juga memiliki teknologi anti force close yang membuat script kami lebih stabil."
+                question: "Is this script safe to use?",
+                answer: "Yes! Our script has been proven safe for over 2 years, and many users rely on it. We also use anti force-close technology for added stability."
             },
             {
-                question: "Apakah script ini bagus digunakan untuk menjoki?",
-                answer: "Pertanyaan yang bagus! Ya, script kami sangat bagus digunakan untuk menjoki. Kami memiliki fitur truck autofarm, minigame autofarm, event autofarm. Script kita telah digunakan hampir 100% penjoki di CDID, dan sangat stabil!."
+                question: "Is this script good for boosting (joki)?",
+                answer: "Great question! Yes—it’s ideal for boosting. We have features like truck autofarm, minigame autofarm, and event autofarm. Nearly 100% of boosters in CDID use our script because it’s incredibly stable!"
             }
         ]
     };
-    
+
     initFeatures(defaultData.features);
     initBenefits(defaultData.benefits);
     initPricing(defaultData.pricing);
