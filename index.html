@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Hub - Next Generation CDID Technology</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Modern Boot Animation -->
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-container">
+            <div class="boot-logo">
+                <div class="logo-parts">
+                    <div class="logo-part" style="--delay: 0"></div>
+                    <div class="logo-part" style="--delay: 1"></div>
+                    <div class="logo-part" style="--delay: 2"></div>
+                    <div class="logo-part" style="--delay: 3"></div>
+                </div>
+                <h1 class="boot-text">ATOMIC HUB</h1>
+                <div class="boot-progress">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="boot-status">Initializing Quantum Core...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liquid Glass Background -->
+    <div class="liquid-container">
+        <div class="liquid-glass"></div>
+        <div class="liquid-glass"></div>
+        <div class="liquid-glass"></div>
+        <canvas id="liquidCanvas"></canvas>
+    </div>
+
+    <!-- Dot Pattern -->
+    <div class="dot-pattern"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-orb" id="cursorOrb">
+        <div class="orb-core"></div>
+        <div class="orb-glow"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-liquid">
+                    <span class="logo-text">ATOMIC HUB</span>
+                    <div class="logo-glow"></div>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">
+                    <span>Features</span>
+                </a>
+                <a href="#benefits" class="nav-link">
+                    <span>Benefits</span>
+                </a>
+                <a href="#pricing" class="nav-link">
+                    <span>Pricing</span>
+                </a>
+                <a href="#faq" class="nav-link">
+                    <span>FAQ</span>
+                </a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-liquid">
+                    <span>Get Started</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-liquid-bg">
+            <div class="liquid-orb orb-1"></div>
+            <div class="liquid-orb orb-2"></div>
+            <div class="liquid-orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>NEXT GENERATION CDID</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="title-word" data-text="ATOMIC">ATOMIC</span>
+                <span class="title-word" data-text="HUB">HUB</span>
+            </h1>
+            <div class="hero-subtitle">
+                <span class="typing-text"></span>
+                <span class="typing-cursor">|</span>
+            </div>
+            <div class="hero-actions">
+                <button class="btn-hero-primary" onclick="window.open('https://discord.gg/getsades', '_blank')">
+                    <span>Get Started</span>
+                    <div class="btn-liquid-effect"></div>
+                </button>
+                <button class="btn-hero-secondary" onclick="window.open('https://www.youtube.com/watch?v=JShURQnJu3Y', '_blank')">
+                    <span>Watch Demo</span>
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 3l14 9-14 9V3z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="5247">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="99.8" data-decimal="true">0</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="43">0</div>
+                    <div class="stat-label">Response Time</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-grid">
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-gradient">Why Choose</span>
+                    <span class="title-neon">Atomic Hub</span>
+                </h2>
+                <div class="section-liquid-line"></div>
+            </div>
+            <div class="features-grid" id="featuresGrid">
+                <!-- Features will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section" id="benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-gradient">What You</span>
+                    <span class="title-neon">Get</span>
+                </h2>
+            </div>
+            <div class="benefits-grid" id="benefitsGrid">
+                <!-- Benefits will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-gradient">Choose Your</span>
+                    <span class="title-neon">Plan</span>
+                </h2>
+            </div>
+            <div class="pricing-grid" id="pricingGrid">
+                <!-- Pricing cards will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-gradient">What Our Clients</span>
+                    <span class="title-neon">Say</span>
+                </h2>
+            </div>
+            <div class="testimonials-grid" id="testimonialsGrid">
+                <!-- Testimonials will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-liquid-bg">
+            <div class="cta-orb cta-orb-1"></div>
+            <div class="cta-orb cta-orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">
+                    <span class="glitch" data-text="Ready to Launch?">Ready to Launch?</span>
+                </h2>
+                <p class="cta-subtitle">Join thousands of users already using Atomic Hub</p>
+                <button class="btn-cta">
+                    <span>Start Now</span>
+                    <div class="cta-liquid"></div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-gradient">Frequently Asked</span>
+                    <span class="title-neon">Questions</span>
+                </h2>
+            </div>
+            <div class="faq-grid" id="faqGrid">
+                <!-- FAQ items will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">ATOMIC HUB</h3>
+                    <p>Next Generation CDID Technology</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#">Features</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">API Docs</a>
+                        <a href="#">SDK</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Press</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <a href="#">Discord</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Atomic Hub. All rights reserved. Powered by Liquid Glass Technology.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
