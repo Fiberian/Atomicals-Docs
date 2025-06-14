@@ -1,232 +1,141 @@
 {
-  "branding": {
-    "name": "Atomic Hub",
-    "tagline": "Next Generation CDID Technology",
-    "version": "4.0"
-  },
-  "features": [
-    {
-      "icon": "⚡",
-      "title": "Lightning Fast",
-      "description": "Our script won't make your device slow or lag - optimized for peak performance"
-    },
-    {
-      "icon": "🔒",
-      "title": "Quantum Security",
-      "description": "Tired of unsafe scripts? Relax, our script has been proven safe for 2 years and is the first hub that can bypass anti-cheat!"
-    },
-    {
-      "icon": "🌍",
-      "title": "Trusted Worldwide",
-      "description": "Our hub has over 1,600+ buyers and has been trusted for 2 years in the community"
-    },
-    {
-      "icon": "🎯",
-      "title": "99.9% Uptime",
-      "description": "Our script is always online 24/7, no downtime guaranteed"
-    },
-    {
-      "icon": "🛠️",
-      "title": "Always Updated",
-      "description": "Tired of hubs that rarely update? Don't worry, we update daily with every game update!"
-    },
-    {
-      "icon": "💬",
-      "title": "Lightning Support",
-      "description": "We have a support team ready to help you 24/7, no more unsolved problems!"
-    }
-  ],
-  "benefits": [
-    {
-      "icon": "🚀",
-      "title": "Next-Gen Performance",
-      "points": [
-        "Doesn't slow down devices",
-        "AI-powered optimization",
-        "Lightning fast autofarm",
-        "Anti CPU leak technology",
-        "Quantum processing engine"
-      ]
-    },
-    {
-      "icon": "💎",
-      "title": "Premium Features",
-      "points": [
-        "5 Billion+ in just 1 hour",
-        "Advanced webhook integration",
-        "Beautiful modern UI",
-        "Enhanced autofarm panel",
-        "Custom configurations"
-      ]
-    },
-    {
-      "icon": "📊",
-      "title": "Complete Feature Set",
-      "points": [
-        "Truck Autofarm System",
-        "Minigame Autofarm",
-        "Event Autofarm",
-        "Auto Time Trial",
-        "Smart Route Optimization"
-      ]
-    }
-  ],
-  "pricing": [
-    {
-      "name": "Free Trial",
-      "price": "FREE",
-      "period": "lifetime",
-      "features": [
-        "1 Account limit",
-        "1 HWID only",
-        "Basic autofarm speed",
-        "Community support",
-        "Limited features"
-      ]
-    },
-    {
-      "name": "Professional",
-      "price": "IDR 100K",
-      "period": "lifetime",
-      "featured": true,
-      "features": [
-        "Unlimited accounts",
-        "10 HWIDs included",
-        "Priority 24/7 support",
-        "Lightning fast autofarm",
-        "AI Autofarm - safer & stable",
-        "All premium features"
-      ],
-      "cta": "Most Popular"
-    },
-    {
-      "name": "Enterprise",
-      "price": "IDR 150K",
-      "period": "lifetime",
-      "features": [
-        "Unlimited accounts",
-        "Unlimited HWIDs",
-        "No HWID reset needed",
-        "Sharing allowed",
-        "Lite version included",
-        "Super stable performance",
-        "Anti force-close technology",
-        "Personal support line"
-      ],
-      "cta": "Best Value"
-    }
-  ],
-  "testimonials": [
-    {
-      "name": "kecikthejago",
-      "role": "Verified Customer",
-      "date": "2 months ago",
-      "avatar": "https://media.discordapp.net/attachments/1251862836297203853/1379198085216862320/805749700291592213_1748896847398.webp?ex=684e870f&is=684d358f&hm=7d8a3d8e948a68e69c26a0b828f3963e88a01e399509a13166372f6ad109c605&=&format=webp",
-      "text": "I have never experienced any problems like 'gameplay has been logged for review' that I got from past scripts. This script hasn't had any issues since I started using it 2 months ago. Great job Atomical team!",
-      "rating": 5
-    },
-    {
-      "name": "posaidonlele",
-      "role": "Verified Customer",
-      "date": "1 month ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1376951458003419147/1105531206881251368_1748361209730.webp?ex=684eec7a&is=684d9afa&hm=965c277e165d4d985b2b7d37771d6584419258ab181ebc176ca5cccf39658e9f",
-      "text": "This script is incredibly fast for earning money in CDID, has many great features, and I really appreciate the staff's service - they respond super quickly!",
-      "rating": 5
-    },
-    {
-      "name": "kylisc",
-      "role": "Customer & Showcaser",
-      "date": "3 weeks ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1375448688289386506/1351900508679311384_1748002921484.webp?ex=684ebae9&is=684d6969&hm=e21bbd02ac27f10b849383da53a2eeff7f6f17ab8c04d801609501c23ba96e4e",
-      "text": "Amazing performance! No bans at all, super smooth to use. Absolutely recommended!",
-      "rating": 5
-    },
-    {
-      "name": "mik_cdid",
-      "role": "Pro User",
-      "date": "2 weeks ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1372207035344748614/848973190172377088_1747230051156.webp?ex=684ecd63&is=684d7be3&hm=61115646bb2c9e5c5374b5a0d04296d46f8d2182d59109d883c585cbba170916",
-      "text": "Insanely good! You'll regret it if you don't buy this 😝 Best investment ever!",
-      "rating": 5
-    },
-    {
-      "name": "skymyname",
-      "role": "VIP Customer",
-      "date": "1 week ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1372011879475580958/1213845005068800080_1747183522472.webp?ex=684ec062&is=684d6ee2&hm=a187dce2bfb8fa7d17268587fdefc97a90c7503a62bc01de3853b2f4d6e01807",
-      "text": "Already made over 100M+ using this script! Just waiting for more updates. Absolutely worth it!",
-      "rating": 5
-    },
-    {
-      "name": "mban._07016",
-      "role": "Elite Member",
-      "date": "5 days ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1369065202024321084/1137433102394859580_1746480979721.webp?ex=684e9414&is=684d4294&hm=bf170d1b9bac5fcea0d02b5b82b4dfcf95a7f768e875534b08da2a77fa9c0fe2",
-      "text": "Incredible! You can get rich in both money and points in just hours. Atomicals is truly amazing!",
-      "rating": 5
-    },
-    {
-      "name": "d12",
-      "role": "Long-time User",
-      "date": "3 days ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1368763617528385536/739428523512692736_1746409076356.webp?ex=684eccb4&is=684d7b34&hm=04ae9ba0f2cb52e9ebe54e387b6293a5596907cb72799372846b88ccac619ff1&",
-      "text": "Worth every penny and has never disappointed since day one. Consistent quality!",
-      "rating": 5
-    },
-    {
-      "name": "valendra712",
-      "role": "Premium Member",
-      "date": "2 days ago",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1368540845711556769/1239378641419370567_1746355963463.webp?ex=684ea5fb&is=684d547b&hm=748715a5fe8de2424a2e87e556aa4f1aabc07d6ba274841ff3f5377666a6b9be",
-      "text": "Love the script! Easy to use and delivers serious results. Keep it up Atomical! 🤝",
-      "rating": 5
-    },
-    {
-      "name": "variesv1",
-      "role": "New Customer",
-      "date": "Yesterday",
-      "avatar": "https://cdn.discordapp.com/attachments/1251862836297203853/1368221778555699240/838618710645276712_1746279891979.webp?ex=684ece54&is=684d7cd4&hm=f486eb81760bf292c6fac2fcf8ad6bf0d33f5e5e5d38ef7d3df8fc41514b361e",
-      "text": "Just bought it, works amazingly! Staff is friendly, helpful, fast response, fast process. Love it! ♥️",
-      "rating": 5
-    }
-  ],
-  "faq": [
-    {
-      "question": "What is Atomic Hub CDID?",
-      "answer": "Atomic Hub CDID is the best, fastest, and safest CDID script in Indonesia. Our script has been trusted for 2 years with proven track record!"
-    },
-    {
-      "question": "How much can I earn with autofarm?",
-      "answer": "Without gamepass (50% Job Earnings): You'll earn 3 Billion+ per hour. With gamepass (50% Job Earnings): You'll earn 5 Billion+ per hour. Results may vary based on server conditions."
-    },
-    {
-      "question": "Is this script safe to use?",
-      "answer": "Yes, our script has been proven safe for 2 years with thousands of users. We have anti force-close technology that makes our script more stable than competitors."
-    },
-    {
-      "question": "Is this good for service providers?",
-      "answer": "Excellent question! Yes, our script is perfect for service providers. We have truck autofarm, minigame autofarm, and event autofarm. Almost 100% of CDID service providers use our script for its stability!"
-    },
-    {
-      "question": "How do I get support?",
-      "answer": "Join our Discord at discord.gg/getsades for 24/7 support, payment information, and community help. Our team responds within minutes!"
-    },
-    {
-      "question": "Can I see a demo before buying?",
-      "answer": "Yes! Click the 'Watch Demo' button to see our script in action. You can also join our Discord to see live demonstrations and user showcases."
-    }
-  ],
-  "stats": {
-    "users": 5247,
-    "successRate": 99.8,
-    "uptime": 99.9,
-    "responseTime": 43,
-    "serversGlobal": 127,
-    "dailyRequests": "2.4M"
-  },
-  "social": {
-    "discord": "https://discord.gg/getsades",
-    "youtube": "https://www.youtube.com/watch?v=JShURQnJu3Y",
-    "demo_credit": "Zyren Script"
-  }
-}
+        features: [
+            { icon: "⚡", title: "Lightning Fast", description: "Our script won't slow down or lag your device - optimized for peak performance." },
+            { icon: "🔒", title: "Quantum Security", description: "Proven secure for 2 years, first hub to bypass anti-cheat!" },
+            { icon: "🌍", title: "Trusted Worldwide", description: "Over 1,600+ buyers trust our service globally." },
+            { icon: "🎯", title: "99.9% Uptime", description: "Always online 24/7 with no downtime guaranteed." },
+            { icon: "🛠️", title: "Daily Updates", description: "Updated daily with every game update!" },
+            { icon: "💬", title: "24/7 Support", description: "Support team ready to help anytime!" }
+        ],
+        benefits: [
+            {
+                icon: "🚀",
+                title: "Next-Gen Performance",
+                points: ["No device slowdown", "AI-powered optimization", "Lightning autofarm", "Anti CPU leak tech", "Quantum processing"]
+            },
+            {
+                icon: "💎",
+                title: "Premium Features",
+                points: ["5 Billion+ per hour", "Webhook integration", "Beautiful UI", "Enhanced autofarm", "Custom configs"]
+            },
+            {
+                icon: "📊",
+                title: "Complete Features",
+                points: ["Truck Autofarm", "Minigame Autofarm", "Event Autofarm", "Auto Time Trial", "Smart Routes"]
+            }
+        ],
+        pricing: [
+            {
+                name: "Free Trial",
+                price: "FREE",
+                period: "lifetime",
+                features: ["1 Account", "1 HWID", "Basic autofarm", "Community support", "Limited features"]
+            },
+            {
+                name: "Professional",
+                price: "IDR 100K",
+                period: "lifetime",
+                featured: true,
+                features: ["Unlimited accounts", "10 HWIDs", "Priority support", "Fast autofarm", "AI features", "All premium features"],
+                cta: "Most Popular"
+            },
+            {
+                name: "Enterprise",
+                price: "IDR 150K",
+                period: "lifetime",
+                features: ["Unlimited accounts", "Unlimited HWIDs", "No HWID reset", "Sharing allowed", "All features", "Personal support"],
+                cta: "Best Value"
+            }
+        ],
+        testimonials: [
+            {
+                name: "valendra712",
+                role: "Customer",
+                date: "5/4/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1368540845711556769/1239378641419370567_1746355963463.webp?ex=684ea5fb&is=684d547b&hm=748715a5fe8de2424a2e87e556aa4f1aabc07d6ba274841ff3f5377666a6b9be",
+                text: "Suka sama scriptnya easy to use dan ga main main dalam hasilnya,keep it up atomical🤝",
+                rating: 5
+            },
+            {
+                name: "variesv",
+                role: "Customer",
+                date: "5/3/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1368221778555699240/838618710645276712_1746279891979.webp?ex=684ece54&is=684d7cd4&hm=f486eb81760bf292c6fac2fcf8ad6bf0d33f5e5e5d38ef7d3df8fc41514b361e",
+                text: "This script is incredibly fast for earning money in CDID, has many great features, and I really appreciate the staff's service - they respond super quickly!",
+                rating: 5
+            },
+            {
+                name: "subspiinx",
+                role: "Customer",
+                date: "5/2/2025",
+                avatar: "https://media.discordapp.net/attachments/1251862836297203853/1367885254039179436/1112933496705523722_1746199658278.webp?ex=684ee66a&is=684d94ea&hm=599ffc380a7919c52bedabcab5e7c07d95ea2d3e92488dc1715c60c3ffb2c0c3&=&format=webp",
+                text: "GACOR DAH POKOKNYA MAH ANTI KERUT ANTI BOCOR!!",
+                rating: 5
+            },
+            {
+                name: "banunugraha ",
+                role: "Customer",
+                date: "4/29/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1366772630560051220/1340326310286725170_1745934388057.webp?ex=684eceb4&is=684d7d34&hm=e671180f8bd478b1c0e29bfa29503c5bc5c4bc2df07a3c22c8634216282194b5",
+                text: "Mantap dehh dijelasin se jelas jelasnya se detail detai nyaa, btw aku belum pernah pale script dan ini pertama kalinya pakee, mudah banget soalnya dibantu sampe bisaaa",
+                rating: 5
+            },
+            {
+                name: "2in1guy",
+                role: "Customer",
+                date: "4/28/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1366375817738850344/365882381187547136_1745839780341.webp?ex=684eaea4&is=684d5d24&hm=0784915bf4e24f6d09904d4f7095cff01cbaea9321eb7ad22c9f9703a5c35647",
+                text: "Best bgt scriptnya!!! admin juga ramah bgt, mantap pollllll!",
+                rating: 5
+            },
+            {
+                name: "piwpowwwa",
+                role: "Customer",
+                date: "4/28/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1366346952417087518/1314738556622868542_1745832898597.webp?ex=684f3c82&is=684deb02&hm=083ed6a892896e6f2a310eed14526f62ded4eee2c478cdb6f587e4492f50b4a2",
+                text: "mantap intinya dri awalnya bnyk problem smpe teroptimalisasi dengan baik gacor dahh intinya, semoga terus berkembang smpe bisa 100 triliun per detik",
+                rating: 5
+            },
+            {
+                name: "akugemaaaa",
+                role: "Customer",
+                date: "4/27/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1365846747305349130/842374297183191050_1745713640583.webp?ex=684ebc28&is=684d6aa8&hm=15dcc2fd89384f47e177416f881875f8c94a76d43629d245ed9d4cafbbf80fbd",
+                text: "mantap intinya dri awalnya bnyk problem smpe teroptimalisasi dengan baik gacor dahh intinya, semoga terus berkembang smpe bisa 100 triliun per detik",
+                rating: 5
+            },
+            {
+                name: "flevii_",
+                role: "Customer",
+                date: "4/26/2025",
+                avatar: "https://media.discordapp.net/attachments/1251862836297203853/1365642371211067433/1303349384922005506_1745664913321.webp?ex=684ea691&is=684d5511&hm=534e7b49457a1ac08e48d9aff462775409ac5ab1074ff433a1ce9cb7156f6c14&=&format=webp",
+                text: "Best CDID script ever, I never felt good using roblox script, until I found Atomic, and its feel good 🌟",
+                rating: 5
+            },
+            {
+                name: "moltreess",
+                role: "Customer - Donator",
+                date: "4/26/2025",
+                avatar: "https://cdn.discordapp.com/attachments/1251862836297203853/1365620661569196063/305731356531490817_1745659737176.webp?ex=684f3b19&is=684de999&hm=dd8c6300760468884168db7577809cc5d5a1ac2470c8309ce58209cf805a7ff9",
+                text: "It's been a year since I used this script, and overall, not bad! \nUdah improve banyak banget aselii, yang mulai consume CPU Dan ramnya jadi lebih kecil, autofarm minigame, Dan Masih banyak lagi! What are you waiting for? Buy a premium Script Right Now.",
+                rating: 5
+            }
+        ],
+        faq: [
+            {
+                question: "What is Atomic Hub CDID?",
+                answer: "Atomic Hub CDID is the best, fastest, and safest CDID script in Indonesia. Trusted for over 2 years!"
+            },
+            {
+                question: "How much can I earn from autofarm?",
+                answer: "Without gamepass: 3 Billion+ per hour. With gamepass (50% Job Earnings): 5 Billion+ per hour."
+            },
+            {
+                question: "Is this script safe to use?",
+                answer: "Yes! Our script has been proven safe for 2 years with anti force-close technology."
+            },
+            {
+                question: "How do I get support?",
+                answer: "Join our Discord at discord.gg/getsades for 24/7 support. Our team responds within minutes!"
+            }
+        ]
