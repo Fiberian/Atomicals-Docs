@@ -7,151 +7,187 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Modern Boot Animation -->
+    <!-- Enhanced Boot Animation -->
     <div class="boot-screen" id="bootScreen">
         <div class="boot-container">
             <div class="boot-logo">
-                <div class="logo-parts">
-                    <div class="logo-part" style="--delay: 0"></div>
-                    <div class="logo-part" style="--delay: 1"></div>
-                    <div class="logo-part" style="--delay: 2"></div>
-                    <div class="logo-part" style="--delay: 3"></div>
+                <div class="logo-matrix">
+                    <div class="matrix-row">
+                        <div class="matrix-dot" style="--x: 0; --y: 0"></div>
+                        <div class="matrix-dot" style="--x: 1; --y: 0"></div>
+                        <div class="matrix-dot" style="--x: 2; --y: 0"></div>
+                    </div>
+                    <div class="matrix-row">
+                        <div class="matrix-dot" style="--x: 0; --y: 1"></div>
+                        <div class="matrix-dot" style="--x: 1; --y: 1"></div>
+                        <div class="matrix-dot" style="--x: 2; --y: 1"></div>
+                    </div>
+                    <div class="matrix-row">
+                        <div class="matrix-dot" style="--x: 0; --y: 2"></div>
+                        <div class="matrix-dot" style="--x: 1; --y: 2"></div>
+                        <div class="matrix-dot" style="--x: 2; --y: 2"></div>
+                    </div>
                 </div>
-                <h1 class="boot-text">ATOMIC HUB</h1>
+                <h1 class="boot-text blur-reveal">ATOMIC HUB</h1>
                 <div class="boot-progress">
                     <div class="progress-fill"></div>
+                    <div class="progress-glow"></div>
                 </div>
-                <p class="boot-status">Initializing Quantum Core...</p>
+                <p class="boot-status blur-reveal">Initializing Quantum Core...</p>
             </div>
         </div>
     </div>
 
-    <!-- Liquid Glass Background -->
-    <div class="liquid-container">
-        <div class="liquid-glass"></div>
-        <div class="liquid-glass"></div>
-        <div class="liquid-glass"></div>
-        <canvas id="liquidCanvas"></canvas>
+    <!-- Enhanced Glass Background -->
+    <div class="glass-background">
+        <div class="gradient-orb gradient-orb-1"></div>
+        <div class="gradient-orb gradient-orb-2"></div>
+        <div class="gradient-orb gradient-orb-3"></div>
+        <div class="gradient-orb gradient-orb-4"></div>
+        <div class="gradient-orb gradient-orb-5"></div>
+        <div class="gradient-orb gradient-orb-6"></div>
+        <canvas id="particleCanvas"></canvas>
+        <div class="glass-shards"></div>
     </div>
 
-    <!-- Dot Pattern -->
-    <div class="dot-pattern"></div>
+    <!-- Enhanced Noise Overlay -->
+    <div class="noise-overlay"></div>
+    <div class="scan-line"></div>
 
-    <!-- Custom Cursor -->
+    <!-- Enhanced Custom Cursor -->
     <div class="cursor-orb" id="cursorOrb">
         <div class="orb-core"></div>
         <div class="orb-glow"></div>
+        <div class="orb-trail"></div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <div class="logo-liquid">
-                    <span class="logo-text">ATOMIC HUB</span>
-                    <div class="logo-glow"></div>
+    <!-- Navigation with Blur -->
+    <!-- Navigation with Blur -->
+    <nav class="navbar glass-panel blur-load" id="navbar">
+        <div class="navbar-wrapper">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <div class="logo-liquid">
+                        <span class="logo-text">ATOMIC HUB</span>
+                        <div class="logo-glow"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">
-                    <span>Features</span>
-                </a>
-                <a href="#benefits" class="nav-link">
-                    <span>Benefits</span>
-                </a>
-                <a href="#pricing" class="nav-link">
-                    <span>Pricing</span>
-                </a>
-                <a href="#faq" class="nav-link">
-                    <span>FAQ</span>
-                </a>
-            </div>
-            <div class="nav-actions">
-                <button class="btn-liquid">
-                    <span>Get Started</span>
-                </button>
+                <div class="nav-links">
+                    <a href="#features" class="nav-link glass-link">
+                        <span>Features</span>
+                    </a>
+                    <a href="#benefits" class="nav-link glass-link">
+                        <span>Benefits</span>
+                    </a>
+                    <a href="#pricing" class="nav-link glass-link">
+                        <span>Pricing</span>
+                    </a>
+                    <a href="#testimonials" class="nav-link glass-link">
+                        <span>Reviews</span>
+                    </a>
+                    <a href="#faq" class="nav-link glass-link">
+                        <span>FAQ</span>
+                    </a>
+
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-glass glow-button" onclick="window.open('https://discord.gg/getsades', '_blank')">
+                        <span>Get Started</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+                <div class="nav-mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <!-- Hero Section -->
+    <!-- Enhanced Hero Section -->
     <section class="hero">
-        <div class="hero-liquid-bg">
-            <div class="liquid-orb orb-1"></div>
-            <div class="liquid-orb orb-2"></div>
-            <div class="liquid-orb orb-3"></div>
+        <div class="hero-bg-effects">
+            <div class="hero-grid"></div>
+            <div class="hero-glow-1"></div>
+            <div class="hero-glow-2"></div>
         </div>
         <div class="hero-content">
-            <div class="hero-badge">
-                <span>NEXT GENERATION CDID</span>
+            <div class="hero-badge glass-panel blur-load" data-delay="0.2">
+                <span class="badge-text">NEXT GENERATION CDID</span>
+                <div class="badge-shimmer"></div>
             </div>
             <h1 class="hero-title">
-                <span class="title-word" data-text="ATOMIC">ATOMIC</span>
-                <span class="title-word" data-text="HUB">HUB</span>
+                <span class="title-word blur-word" data-text="ATOMIC">ATOMIC</span>
+                <span class="title-word blur-word" data-text="HUB">HUB</span>
             </h1>
-            <div class="hero-subtitle">
+            <div class="hero-subtitle blur-load" data-delay="0.4">
                 <span class="typing-text"></span>
                 <span class="typing-cursor">|</span>
             </div>
-            <div class="hero-actions">
-                <button class="btn-hero-primary" onclick="window.open('https://discord.gg/getsades', '_blank')">
+            <div class="hero-actions blur-load" data-delay="0.6">
+                <button class="btn-hero-primary glass-button-enhanced" onclick="window.open('https://discord.gg/getsades', '_blank')">
                     <span>Get Started</span>
-                    <div class="btn-liquid-effect"></div>
+                    <div class="btn-glow"></div>
+                    <div class="btn-shimmer"></div>
                 </button>
-                <button class="btn-hero-secondary" onclick="window.open('https://www.youtube.com/watch?v=JShURQnJu3Y', '_blank')">
+                <button class="btn-hero-secondary glass-button-outline" onclick="window.open('https://www.youtube.com/watch?v=JShURQnJu3Y', '_blank')">
                     <span>Watch Showcase</span>
                     <svg class="play-icon" viewBox="0 0 24 24" fill="none">
                         <path d="M5 3l14 9-14 9V3z" fill="currentColor"/>
                     </svg>
                 </button>
             </div>
-            <div class="hero-stats">
-                <div class="stat-card">
+            <div class="hero-stats blur-load" data-delay="0.8">
+                <div class="stat-card glass-panel-enhanced">
+                    <div class="stat-icon">👥</div>
                     <div class="stat-number" data-target="1652">0</div>
                     <div class="stat-label">Active Users</div>
+                    <div class="stat-glow"></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-target="98" data-decimal="true">0</div>
+                <div class="stat-card glass-panel-enhanced">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-number" data-target="99.9" data-decimal="true">0</div>
                     <div class="stat-label">Up Time</div>
+                    <div class="stat-glow"></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" data-target="20000000">0</div>
-                    <div class="stat-label">Total Execution</div>
+                <div class="stat-card glass-panel-enhanced">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-number" data-target="2400000">0</div>
+                    <div class="stat-label">Daily Requests</div>
+                    <div class="stat-glow"></div>
                 </div>
             </div>
         </div>
-        <div class="hero-grid">
-            <div class="grid-line"></div>
-            <div class="grid-line"></div>
-            <div class="grid-line"></div>
-            <div class="grid-line"></div>
-        </div>
+        <div class="hero-bottom-fade"></div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features Section with Enhanced Blur -->
     <section class="features-section" id="features">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header blur-load">
                 <h2 class="section-title">
                     <span class="title-gradient">Why Choose</span>
                     <span class="title-neon">Atomic Hub</span>
                 </h2>
-                <div class="section-liquid-line"></div>
+                <div class="section-liquid-line">
+                    <div class="liquid-animation"></div>
+                </div>
             </div>
             <div class="features-grid" id="featuresGrid">
-                <!-- Features will be loaded dynamically -->
+                <!-- Features will be loaded dynamically with blur -->
             </div>
         </div>
     </section>
 
-    <!-- Benefits Section -->
+    <!-- Benefits Section with Glass Effects -->
     <section class="benefits-section" id="benefits">
+        <div class="section-bg-pattern"></div>
         <div class="container">
-            <div class="section-header">
+            <div class="section-header blur-load">
                 <h2 class="section-title">
                     <span class="title-gradient">What You</span>
                     <span class="title-neon">Get</span>
@@ -163,10 +199,10 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
+    <!-- Pricing Section with Glow -->
     <section class="pricing-section" id="pricing">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header blur-load">
                 <h2 class="section-title">
                     <span class="title-gradient">Choose Your</span>
                     <span class="title-neon">Plan</span>
@@ -178,45 +214,51 @@
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- Enhanced Testimonials Section - Horizontal Infinite Scroll -->
     <section class="testimonials-section" id="testimonials">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header blur-load">
                 <h2 class="section-title">
                     <span class="title-gradient">What Our Clients</span>
                     <span class="title-neon">Say</span>
                 </h2>
             </div>
-            <div class="testimonials-grid" id="testimonialsGrid">
-                <!-- Testimonials will be loaded dynamically -->
+        </div>
+        <div class="testimonials-container">
+            <div class="testimonials-fade-left"></div>
+            <div class="testimonials-fade-right"></div>
+            <div class="testimonials-wrapper">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <!-- Testimonials will be loaded dynamically -->
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- Enhanced CTA Section -->
     <section class="cta-section">
-        <div class="cta-liquid-bg">
-            <div class="cta-orb cta-orb-1"></div>
-            <div class="cta-orb cta-orb-2"></div>
-        </div>
+        <div class="cta-bg-effect"></div>
         <div class="container">
-            <div class="cta-content">
+            <div class="cta-content glass-panel-enhanced blur-load">
                 <h2 class="cta-title">
                     <span class="glitch" data-text="Ready to Launch?">Ready to Launch?</span>
                 </h2>
                 <p class="cta-subtitle">Join thousands of users already using Atomic Hub</p>
-                <button class="btn-cta">
+                <button class="btn-cta glass-button-enhanced" onclick="window.open('https://discord.gg/getsades', '_blank')">
                     <span>Start Now</span>
-                    <div class="cta-liquid"></div>
+                    <div class="btn-pulse"></div>
+                    <div class="btn-shimmer"></div>
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
+
+
+    <!-- FAQ Section with Enhanced Animations -->
     <section class="faq-section" id="faq">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header blur-load">
                 <h2 class="section-title">
                     <span class="title-gradient">Frequently Asked</span>
                     <span class="title-neon">Questions</span>
@@ -228,35 +270,46 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Enhanced Footer -->
+    <footer class="footer glass-panel">
+        <div class="footer-bg-effect"></div>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
+                <div class="footer-brand blur-load">
                     <h3 class="footer-logo">ATOMIC HUB</h3>
                     <p>Next Generation CDID Technology</p>
+                    <div class="footer-socials">
+                        <a href="https://discord.gg/getsades" target="_blank" class="social-link">
+                            <span>Discord</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span>YouTube</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span>Twitter</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="footer-links">
+                <div class="footer-links blur-load">
                     <div class="footer-column">
                         <h4>Product</h4>
-                        <a href="#">Features</a>
-                        <a href="#">Pricing</a>
-                        <a href="#">API Docs</a>
-                        <a href="#">SDK</a>
+                        <a href="#features" class="footer-link">Features</a>
+                        <a href="#pricing" class="footer-link">Pricing</a>
+                        <a href="#testimonials" class="footer-link">Reviews</a>
+                        <a href="#faq" class="footer-link">FAQ</a>
                     </div>
                     <div class="footer-column">
-                        <h4>Company</h4>
-                        <a href="#">About</a>
-                        <a href="#">Blog</a>
-                        <a href="#">Careers</a>
-                        <a href="#">Press</a>
+                        <h4>Legal</h4>
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Cookie Policy</a>
+                        <a href="#" class="footer-link">EULA</a>
                     </div>
                     <div class="footer-column">
                         <h4>Connect</h4>
-                        <a href="#">Discord</a>
-                        <a href="#">Twitter</a>
-                        <a href="#">GitHub</a>
-                        <a href="#">LinkedIn</a>
+                        <a href="https://discord.gg/getsades" target="_blank" class="footer-link">Discord</a>
+                        <a href="#" class="footer-link">YouTube</a>
+                        <a href="#" class="footer-link">Twitter</a>
+                        <a href="#" class="footer-link">Telegram</a>
                     </div>
                 </div>
             </div>
