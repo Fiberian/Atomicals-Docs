@@ -1,6 +1,29 @@
-// PUSINK GUE NGENTOTTT, YANG BACA KEK KONTOLL!@
+// Enhanced Atomic Hub Script with Ultra-Smooth macOS-style Animations
 
-document.addEventListener('DOMContentLoaded', function() {
+// Load GSAP first
+function loadGSAP() {
+    return new Promise((resolve) => {
+        if (typeof gsap !== 'undefined') {
+            resolve();
+            return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+        script.onload = () => {
+            const scrollScript = document.createElement('script');
+            scrollScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js';
+            scrollScript.onload = resolve;
+            document.head.appendChild(scrollScript);
+        };
+        document.head.appendChild(script);
+    });
+}
+
+// Initialize after GSAP is loaded
+document.addEventListener('DOMContentLoaded', async function() {
+    await loadGSAP();
+    
     initEnhancedCursor();
     initEnhancedBootAnimation();
     initSmoothScrollEffects();
@@ -11,39 +34,59 @@ document.addEventListener('DOMContentLoaded', function() {
     loadDataAndInitialize();
     
     initMobileMenu();
+    initAdvancedInteractions();
 });
 
-// Enhanced Custom Cursor with Trail Effect
+// Enhanced Custom Cursor with Smoother Trail Effect
 function initEnhancedCursor() {
     const cursor = document.getElementById('cursorOrb');
     
     if (window.matchMedia("(pointer: fine)").matches) {
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
+        let velocityX = 0, velocityY = 0;
         
-        // Mouse position tracking
+        // Mouse position tracking with velocity
         document.addEventListener('mousemove', (e) => {
+            const deltaX = e.clientX - mouseX;
+            const deltaY = e.clientY - mouseY;
+            
+            velocityX = deltaX;
+            velocityY = deltaY;
+            
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
         
-        // Smooth cursor animation with spring physics
+        // Ultra-smooth cursor animation with spring physics
         function animateCursor() {
-            const speed = 0.12;
+            const springFactor = 0.15;
+            const dampingFactor = 0.85;
+            
             const distX = mouseX - cursorX;
             const distY = mouseY - cursorY;
             
-            cursorX += distX * speed;
-            cursorY += distY * speed;
+            const accX = distX * springFactor;
+            const accY = distY * springFactor;
+            
+            velocityX = (velocityX + accX) * dampingFactor;
+            velocityY = (velocityY + accY) * dampingFactor;
+            
+            cursorX += velocityX;
+            cursorY += velocityY;
             
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
+            
+            // Add subtle rotation based on velocity
+            const rotation = (velocityX * 0.5);
+            cursor.style.transform = `rotate(${rotation}deg)`;
             
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
         
-        // Enhanced hover effects
+        // Enhanced hover effects with smooth transitions
         const interactiveElements = document.querySelectorAll(
             'a, button, .feature-card, .benefit-card, .pricing-card, .testimonial-card, .faq-item, .nav-link, input, textarea'
         );
@@ -51,7 +94,8 @@ function initEnhancedCursor() {
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => {
                 cursor.classList.add('hover');
-                el.style.transform = 'scale(1.02)';
+                el.style.transform = 'scale(1.05)';
+                el.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
             });
             
             el.addEventListener('mouseleave', () => {
@@ -60,9 +104,9 @@ function initEnhancedCursor() {
             });
         });
         
-        // Click effect
+        // Enhanced click effect
         document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
+            cursor.style.transform = 'scale(0.7)';
         });
         
         document.addEventListener('mouseup', () => {
@@ -73,11 +117,12 @@ function initEnhancedCursor() {
     }
 }
 
-// Enhanced Boot Animation with Matrix Effect
+// Enhanced Boot Animation with Ultra-Smooth Matrix Effect
 function initEnhancedBootAnimation() {
     const bootScreen = document.getElementById('bootScreen');
     const bootStatus = document.querySelector('.boot-status');
     const bootText = document.querySelector('.boot-text');
+    const matrixDots = document.querySelectorAll('.matrix-dot');
     
     // Add blur reveal class
     setTimeout(() => {
@@ -85,7 +130,7 @@ function initEnhancedBootAnimation() {
         bootStatus.classList.add('blur-reveal');
     }, 100);
     
-    // Status messages with tech feel
+    // Status messages with smooth transitions
     const statusMessages = [
         'Initializing Quantum Core...',
         'Loading Glass Engine...',
@@ -104,11 +149,11 @@ function initEnhancedBootAnimation() {
                 bootStatus.textContent = statusMessages[messageIndex];
                 bootStatus.style.opacity = '1';
                 bootStatus.style.filter = 'blur(0)';
-            }, 200);
+            }, 1);
             
             messageIndex++;
         }
-    }, 600);
+    }, 1);
     
     // Enhanced hide boot screen
     setTimeout(() => {
@@ -118,11 +163,11 @@ function initEnhancedBootAnimation() {
         // Start page animations
         setTimeout(() => {
             animatePageContent();
-        }, 300);
-    }, 3500);
+        }, 1);
+    }, 1);
 }
 
-// Animate all page content with blur
+// Animate all page content with enhanced blur and stagger
 function animatePageContent() {
     // Animate navbar
     const navbar = document.querySelector('.navbar');
@@ -147,12 +192,12 @@ function animatePageContent() {
     
     // Start hero animations
     setTimeout(() => {
-        startTypingAnimation();
+        startEnhancedTypingAnimation();
         animateHeroStats();
     }, 800);
 }
 
-// Enhanced Particle Canvas with Connection Lines
+// Enhanced Particle Canvas with Advanced Connection Lines
 function initEnhancedParticleCanvas() {
     const canvas = document.getElementById('particleCanvas');
     if (!canvas) return;
@@ -162,81 +207,139 @@ function initEnhancedParticleCanvas() {
     let height = canvas.height = window.innerHeight;
     
     const particles = [];
-    const particleCount = window.innerWidth > 768 ? 100 : 50;
-    const connectionDistance = 150;
+    const particleCount = window.innerWidth > 768 ? 120 : 60;
+    const connectionDistance = 180;
     let mouseX = 0;
     let mouseY = 0;
+    let time = 0;
     
-    // Mouse tracking for particle interaction
+    // Enhanced mouse tracking with smooth interpolation
+    const mouse = {
+        x: 0,
+        y: 0,
+        targetX: 0,
+        targetY: 0
+    };
+    
     window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        mouse.targetX = e.clientX;
+        mouse.targetY = e.clientY;
     });
     
-    class Particle {
+    class EnhancedParticle {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.size = Math.random() * 2 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.5;
-            this.speedY = (Math.random() - 0.5) * 0.5;
-            this.opacity = Math.random() * 0.5 + 0.2;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.6;
+            this.speedY = (Math.random() - 0.5) * 0.6;
+            this.opacity = Math.random() * 0.6 + 0.3;
             this.pulseSpeed = Math.random() * 0.02 + 0.01;
             this.pulsePhase = Math.random() * Math.PI * 2;
             this.color = Math.random() > 0.5 ? '139, 92, 246' : '232, 121, 249';
+            this.orbitRadius = Math.random() * 50 + 20;
+            this.orbitSpeed = Math.random() * 0.02 + 0.01;
+            this.orbitPhase = Math.random() * Math.PI * 2;
         }
         
         update() {
-            // Movement
-            this.x += this.speedX;
-            this.y += this.speedY;
+            // Smooth mouse interpolation
+            mouse.x += (mouse.targetX - mouse.x) * 0.1;
+            mouse.y += (mouse.targetY - mouse.y) * 0.1;
             
-            // Mouse interaction
-            const dx = mouseX - this.x;
-            const dy = mouseY - this.y;
+            // Orbital movement
+            this.orbitPhase += this.orbitSpeed;
+            const orbitX = Math.cos(this.orbitPhase) * this.orbitRadius * 0.1;
+            const orbitY = Math.sin(this.orbitPhase) * this.orbitRadius * 0.1;
+            
+            // Base movement with orbit
+            this.x += this.speedX + orbitX;
+            this.y += this.speedY + orbitY;
+            
+            // Enhanced mouse interaction with smooth attraction/repulsion
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 100) {
-                const force = (100 - distance) / 100;
-                this.x -= (dx / distance) * force * 2;
-                this.y -= (dy / distance) * force * 2;
+            if (distance < 150) {
+                const force = (150 - distance) / 150;
+                const angle = Math.atan2(dy, dx);
+                
+                // Smooth repulsion with easing
+                this.x -= Math.cos(angle) * force * 3 * (1 - force);
+                this.y -= Math.sin(angle) * force * 3 * (1 - force);
             }
             
-            // Wrap around edges
-            if (this.x > width + 50) this.x = -50;
-            if (this.x < -50) this.x = width + 50;
-            if (this.y > height + 50) this.y = -50;
-            if (this.y < -50) this.y = height + 50;
+            // Smooth edge wrapping
+            const margin = 50;
+            if (this.x > width + margin) {
+                this.x = -margin;
+                this.y = Math.random() * height;
+            }
+            if (this.x < -margin) {
+                this.x = width + margin;
+                this.y = Math.random() * height;
+            }
+            if (this.y > height + margin) {
+                this.y = -margin;
+                this.x = Math.random() * width;
+            }
+            if (this.y < -margin) {
+                this.y = height + margin;
+                this.x = Math.random() * width;
+            }
             
-            // Pulse effect
+            // Smooth pulse effect
             this.pulsePhase += this.pulseSpeed;
             this.currentOpacity = this.opacity + Math.sin(this.pulsePhase) * 0.3;
+            this.currentSize = this.size + Math.sin(this.pulsePhase * 2) * 0.5;
         }
         
         draw() {
-            ctx.fillStyle = `rgba(${this.color}, ${this.currentOpacity})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Glow effect
-            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 4);
-            gradient.addColorStop(0, `rgba(${this.color}, ${this.currentOpacity * 0.5})`);
+            // Main particle with gradient
+            const gradient = ctx.createRadialGradient(
+                this.x, this.y, 0,
+                this.x, this.y, this.currentSize * 2
+            );
+            gradient.addColorStop(0, `rgba(${this.color}, ${this.currentOpacity})`);
             gradient.addColorStop(1, `rgba(${this.color}, 0)`);
+            
             ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, this.currentSize * 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Inner glow
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity * 0.8})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.currentSize * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Outer glow effect
+            const glowGradient = ctx.createRadialGradient(
+                this.x, this.y, 0,
+                this.x, this.y, this.currentSize * 8
+            );
+            glowGradient.addColorStop(0, `rgba(${this.color}, ${this.currentOpacity * 0.3})`);
+            glowGradient.addColorStop(1, `rgba(${this.color}, 0)`);
+            
+            ctx.fillStyle = glowGradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.currentSize * 8, 0, Math.PI * 2);
             ctx.fill();
         }
     }
     
     // Create particles
     for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
+        particles.push(new EnhancedParticle());
     }
     
     function animate() {
-        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+        ctx.fillRect(0, 0, width, height);
+        
+        time += 0.01;
         
         // Update and draw particles
         particles.forEach(particle => {
@@ -244,23 +347,30 @@ function initEnhancedParticleCanvas() {
             particle.draw();
         });
         
-        // Draw connections
+        // Enhanced connections with gradient and glow
         particles.forEach((a, index) => {
             particles.slice(index + 1).forEach(b => {
                 const distance = Math.hypot(a.x - b.x, a.y - b.y);
                 if (distance < connectionDistance) {
-                    const opacity = (1 - distance / connectionDistance) * 0.2;
+                    const opacity = Math.pow(1 - distance / connectionDistance, 2) * 0.4;
                     
-                    // Gradient line
+                    // Create gradient for connection line
                     const gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
                     gradient.addColorStop(0, `rgba(${a.color}, ${opacity})`);
+                    gradient.addColorStop(0.5, `rgba(255, 255, 255, ${opacity * 0.5})`);
                     gradient.addColorStop(1, `rgba(${b.color}, ${opacity})`);
                     
+                    // Draw connection with glow
                     ctx.strokeStyle = gradient;
-                    ctx.lineWidth = 0.5;
+                    ctx.lineWidth = 1.5;
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
                     ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                    
+                    // Add glow to connection
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                    ctx.lineWidth = 3;
                     ctx.stroke();
                 }
             });
@@ -271,14 +381,14 @@ function initEnhancedParticleCanvas() {
     
     animate();
     
-    // Resize handler
-    window.addEventListener('resize', () => {
+    // Smooth resize handler
+    window.addEventListener('resize', debounce(() => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
-    });
+    }, 250));
 }
 
-// Enhanced Smooth Scroll Effects
+// Enhanced Smooth Scroll Effects with Parallax
 function initSmoothScrollEffects() {
     const navbar = document.querySelector('.navbar');
     let lastScroll = 0;
@@ -342,17 +452,26 @@ function initSmoothScrollEffects() {
     });
 }
 
-// Enhanced Hero Animations with Blur
+// Enhanced Hero Animations
 function initEnhancedHeroAnimations() {
     // Advanced typing effect
-    startTypingAnimation();
+    startEnhancedTypingAnimation();
     
-    // Animated stats
+    // Animated stats with spring physics
     animateHeroStats();
+    
+    // Floating animation for hero elements
+    gsap.to('.hero-badge', {
+        y: -10,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+    });
 }
 
-// Enhanced typing animation with blur
-function startTypingAnimation() {
+// Enhanced typing animation with smooth blur
+function startEnhancedTypingAnimation() {
     const typingText = document.querySelector('.typing-text');
     if (!typingText) return;
     
@@ -372,9 +491,6 @@ function startTypingAnimation() {
     function typeEffect() {
         const currentPhrase = phrases[phraseIndex];
         
-        // Apply typing class for blur effect
-        typingText.classList.add('typing');
-        
         if (isDeleting) {
             typingText.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
@@ -385,11 +501,15 @@ function startTypingAnimation() {
             typingSpeed = 100;
         }
         
-        // Character change blur effect
-        typingText.style.filter = 'blur(4px)';
-        setTimeout(() => {
-            typingText.style.filter = 'blur(0)';
-        }, 50);
+        // Smooth character change effect
+        gsap.to(typingText, {
+            filter: 'blur(0)',
+            duration: 0.1,
+            ease: "power2.out"
+        });
+        
+        // Apply typing class
+        typingText.classList.add('typing');
         
         if (!isDeleting && charIndex === currentPhrase.length) {
             isDeleting = true;
@@ -398,6 +518,17 @@ function startTypingAnimation() {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
             typingSpeed = 500;
+            
+            // Phrase change effect
+            gsap.fromTo(typingText, {
+                filter: 'blur(20px)',
+                scale: 0.9
+            }, {
+                filter: 'blur(0)',
+                scale: 1,
+                duration: 0.5,
+                ease: "power3.out"
+            });
         }
         
         setTimeout(typeEffect, typingSpeed);
@@ -406,7 +537,7 @@ function startTypingAnimation() {
     setTimeout(typeEffect, 1000);
 }
 
-// Animate hero stats when visible
+// Animate hero stats with enhanced effects
 function animateHeroStats() {
     const observerOptions = {
         threshold: 0.5,
@@ -419,7 +550,7 @@ function animateHeroStats() {
                 const statNumbers = entry.target.querySelectorAll('.stat-number');
                 statNumbers.forEach((stat, index) => {
                     setTimeout(() => {
-                        animateValueWithBlur(stat);
+                        animateValueWithEnhancedBlur(stat);
                     }, index * 200);
                 });
                 statsObserver.unobserve(entry.target);
@@ -433,8 +564,8 @@ function animateHeroStats() {
     }
 }
 
-// Enhanced counter animation with blur effect
-function animateValueWithBlur(element) {
+// Enhanced counter animation with ultra-smooth blur effect
+function animateValueWithEnhancedBlur(element) {
     const target = parseFloat(element.dataset.target);
     const isDecimal = element.dataset.decimal === 'true';
     const duration = 2500;
@@ -444,6 +575,15 @@ function animateValueWithBlur(element) {
     // Initial blur
     element.style.filter = 'blur(20px)';
     element.style.transform = 'scale(0.8)';
+    element.style.opacity = '0';
+    element.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+    
+    // Start animation
+    setTimeout(() => {
+        element.style.filter = 'blur(0)';
+        element.style.transform = 'scale(1)';
+        element.style.opacity = '1';
+    }, 100);
     
     function updateValue() {
         const currentTime = Date.now();
@@ -454,12 +594,6 @@ function animateValueWithBlur(element) {
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
         const current = start + (target - start) * easeOutQuart;
         
-        // Gradually reduce blur and scale
-        const blurAmount = 20 * (1 - progress);
-        const scale = 0.8 + (0.2 * progress);
-        element.style.filter = `blur(${blurAmount}px)`;
-        element.style.transform = `scale(${scale})`;
-        
         if (progress < 1) {
             if (isDecimal) {
                 element.textContent = current.toFixed(1) + '%';
@@ -468,8 +602,6 @@ function animateValueWithBlur(element) {
             }
             requestAnimationFrame(updateValue);
         } else {
-            element.style.filter = 'blur(0)';
-            element.style.transform = 'scale(1)';
             if (isDecimal) {
                 element.textContent = target.toFixed(1) + '%';
             } else {
@@ -481,24 +613,27 @@ function animateValueWithBlur(element) {
     updateValue();
 }
 
-// Enhanced Blur Intersection Observer
+// Enhanced Blur Intersection Observer with Smooth Animations
 function initBlurIntersectionObservers() {
     const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -100px 0px'
     };
     
     const blurObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                // Add staggered delay based on position
-                const rect = entry.target.getBoundingClientRect();
+                const element = entry.target;
+                const rect = element.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
                 const delay = Math.min((rect.top / viewportHeight) * 0.3, 0.5);
                 
+                // Add staggered delay
                 setTimeout(() => {
-                    entry.target.classList.add('visible');
+                    element.classList.add('visible');
                 }, delay * 1000);
+                
+                blurObserver.unobserve(element);
             }
         });
     }, observerOptions);
@@ -514,19 +649,15 @@ function initBlurIntersectionObservers() {
 }
 
 // Load data and initialize components
-// Load data and initialize components
-let dataLoaded = false; // Flag to prevent duplicate loading
+let dataLoaded = false;
 
 async function loadDataAndInitialize() {
-    // Prevent duplicate loading
     if (dataLoaded) return;
     dataLoaded = true;
     
-    // Clear existing content first
     clearAllContent();
     
     try {
-        // Check if database.json exists
         const response = await fetch('database.json');
         if (!response.ok) {
             throw new Error('Database file not found');
@@ -542,14 +673,15 @@ async function loadDataAndInitialize() {
         // Reinitialize observers after content load
         setTimeout(() => {
             initBlurIntersectionObservers();
+            initAdvancedInteractions();
         }, 100);
     } catch (error) {
         console.error('Error loading data, using default:', error);
         useDefaultData();
         
-        // Reinitialize observers after default data
         setTimeout(() => {
             initBlurIntersectionObservers();
+            initAdvancedInteractions();
         }, 100);
     }
 }
@@ -572,7 +704,7 @@ function clearAllContent() {
     });
 }
 
-// Initialize Features with enhanced blur
+// Initialize Features with enhanced animations
 function initFeatures(features) {
     const grid = document.getElementById('featuresGrid');
     if (!grid || !features) return;
@@ -589,6 +721,18 @@ function initFeatures(features) {
         `;
         
         grid.appendChild(card);
+        
+        // Add hover interaction
+        card.addEventListener('mouseenter', () => {
+            const icon = card.querySelector('.feature-icon');
+            icon.style.transform = 'scale(1.2) rotate(5deg)';
+            icon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            const icon = card.querySelector('.feature-icon');
+            icon.style.transform = 'scale(1) rotate(0deg)';
+        });
     });
 }
 
@@ -616,7 +760,7 @@ function initBenefits(benefits) {
     });
 }
 
-// Initialize Pricing with enhanced animations
+// Initialize Pricing with enhanced 3D tilt effect
 function initPricing(pricing) {
     const grid = document.getElementById('pricingGrid');
     if (!grid || !pricing) return;
@@ -644,7 +788,7 @@ function initPricing(pricing) {
             <button class="btn-pricing" onclick="window.open('https://discord.gg/getsades', '_blank')">${plan.cta || 'Get Started'}</button>
         `;
         
-        // Add hover effect with tilt
+        // Enhanced 3D tilt effect
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -654,37 +798,36 @@ function initPricing(pricing) {
             const rotateX = (y - centerY) / 10;
             const rotateY = (centerX - x) / 10;
             
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
             if (plan.featured) {
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-            } else {
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             }
         });
         
         card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            
             if (plan.featured) {
                 card.style.transform = 'scale(1.05)';
             } else {
                 card.style.transform = '';
             }
             
-            // Smooth transition back
-            card.style.transition = 'transform 0.3s ease';
             setTimeout(() => {
                 card.style.transition = '';
-            }, 300);
+            }, 500);
         });
         
         grid.appendChild(card);
     });
 }
 
-// Enhanced Testimonials with Infinite Horizontal Scroll
+// Enhanced Testimonials with Smooth Infinite Scroll
 function initEnhancedTestimonials(testimonials) {
     const track = document.getElementById('testimonialsTrack');
     if (!track || !testimonials) return;
     
-    // Clear existing content
     track.innerHTML = '';
     
     // Create testimonial cards
@@ -716,7 +859,7 @@ function initEnhancedTestimonials(testimonials) {
     };
     
     // Create multiple sets for smooth infinite scroll
-    const sets = 3; // Number of sets to ensure smooth loop
+    const sets = 3;
     for (let i = 0; i < sets; i++) {
         testimonials.forEach(testimonial => {
             track.appendChild(createTestimonialCard(testimonial));
@@ -724,14 +867,13 @@ function initEnhancedTestimonials(testimonials) {
     }
     
     // Calculate animation duration based on content
-    const cardWidth = 450; // Approximate card width including gap
+    const cardWidth = 450;
     const totalWidth = testimonials.length * cardWidth;
-    const duration = totalWidth / 50; // Adjust speed here (lower = faster)
+    const duration = totalWidth / 50;
     
-    // Apply dynamic animation duration
     track.style.animationDuration = `${duration}s`;
     
-    // Pause on hover functionality
+    // Enhanced pause on hover with smooth transition
     track.addEventListener('mouseenter', () => {
         track.style.animationPlayState = 'paused';
     });
@@ -752,7 +894,7 @@ function initEnhancedTestimonials(testimonials) {
     });
 }
 
-// Initialize FAQ with enhanced blur animations
+// Initialize FAQ with enhanced smooth animations
 function initFAQ(faqItems) {
     const grid = document.getElementById('faqGrid');
     if (!grid || !faqItems) return;
@@ -773,22 +915,35 @@ function initFAQ(faqItems) {
         `;
         
         const question = faqElement.querySelector('.faq-question');
+        const answer = faqElement.querySelector('.faq-answer');
+        const icon = faqElement.querySelector('.faq-icon');
+        
         question.addEventListener('click', () => {
-            // Close other items with blur effect
-            document.querySelectorAll('.faq-item').forEach(item => {
-                if (item !== faqElement && item.classList.contains('active')) {
+            const isActive = faqElement.classList.contains('active');
+            
+            // Close other items
+            document.querySelectorAll('.faq-item.active').forEach(item => {
+                if (item !== faqElement) {
                     item.classList.remove('active');
-                    item.style.filter = 'blur(2px)';
-                    setTimeout(() => {
-                        item.style.filter = 'blur(0)';
-                    }, 300);
+                    const itemAnswer = item.querySelector('.faq-answer');
+                    const itemIcon = item.querySelector('.faq-icon');
+                    itemAnswer.style.maxHeight = '0';
+                    itemIcon.style.transform = 'rotate(0deg)';
                 }
             });
             
             // Toggle current item
-            faqElement.classList.toggle('active');
+            if (isActive) {
+                faqElement.classList.remove('active');
+                answer.style.maxHeight = '0';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                faqElement.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
             
-            // Blur effect on toggle
+            // Add blur effect
             faqElement.style.filter = 'blur(5px)';
             setTimeout(() => {
                 faqElement.style.filter = 'blur(0)';
@@ -799,7 +954,7 @@ function initFAQ(faqItems) {
     });
 }
 
-// Mobile Menu
+// Mobile Menu with smooth animations
 function initMobileMenu() {
     const toggle = document.querySelector('.nav-mobile-toggle');
     const navbar = document.querySelector('.navbar');
@@ -809,48 +964,83 @@ function initMobileMenu() {
     toggle.addEventListener('click', () => {
         navbar.classList.toggle('mobile-open');
         toggle.classList.toggle('active');
+        
+        // Animate mobile menu items
+        if (navbar.classList.contains('mobile-open')) {
+            const links = navbar.querySelectorAll('.nav-link');
+            links.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    link.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
     });
 }
 
-// Enhanced Ripple Effect
-document.addEventListener('click', (e) => {
-    if (e.target.matches('button') || e.target.closest('button')) {
-        const button = e.target.matches('button') ? e.target : e.target.closest('button');
-        
-        // Remove existing ripples
-        const existingRipple = button.querySelector('.ripple');
-        if (existingRipple) {
-            existingRipple.remove();
+// Advanced Interactions
+function initAdvancedInteractions() {
+    // Enhanced Ripple Effect
+    document.addEventListener('click', (e) => {
+        if (e.target.matches('button') || e.target.closest('button')) {
+            const button = e.target.matches('button') ? e.target : e.target.closest('button');
+            
+            const existingRipple = button.querySelector('.ripple');
+            if (existingRipple) {
+                existingRipple.remove();
+            }
+            
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.5);
+                pointer-events: none;
+                left: ${x}px;
+                top: ${y}px;
+                transform: scale(0);
+                animation: rippleEffect 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            `;
+            
+            button.style.position = 'relative';
+            button.style.overflow = 'hidden';
+            button.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
         }
+    });
+    
+    // Magnetic buttons effect
+    const magneticElements = document.querySelectorAll('.btn-hero-primary, .btn-hero-secondary, .btn-cta');
+    
+    magneticElements.forEach(elem => {
+        elem.addEventListener('mousemove', (e) => {
+            const rect = elem.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            elem.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            elem.style.transition = 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)';
+        });
         
-        // Create ripple
-        const ripple = document.createElement('span');
-        ripple.className = 'ripple';
-        const rect = button.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        
-        ripple.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            pointer-events: none;
-            left: ${x}px;
-            top: ${y}px;
-            transform: scale(0);
-            animation: rippleEffect 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        `;
-        
-        button.style.position = 'relative';
-        button.style.overflow = 'hidden';
-        button.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    }
-});
+        elem.addEventListener('mouseleave', () => {
+            elem.style.transform = 'translate(0, 0)';
+            elem.style.transition = 'transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+        });
+    });
+}
 
 // Default data fallback
 function useDefaultData() {
@@ -1004,6 +1194,19 @@ function useDefaultData() {
     initFAQ(defaultData.faq);
 }
 
+// Utility function: Debounce
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // Performance optimization - Debounce resize events
 let resizeTimer;
 window.addEventListener('resize', () => {
@@ -1014,7 +1217,7 @@ window.addEventListener('resize', () => {
     }, 250);
 });
 
-// Add page visibility handling
+// Page visibility handling
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         // Pause animations when page is not visible
