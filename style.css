@@ -67,6 +67,49 @@ body {
     position: relative;
 }
 
+/* Performance Detection Classes */
+.low-performance {
+    --blur-multiplier: 0.25;
+    --animation-multiplier: 0;
+    --shadow-multiplier: 0.5;
+    --particle-opacity: 0.3;
+}
+
+.medium-performance {
+    --blur-multiplier: 0.5;
+    --animation-multiplier: 0.5;
+    --shadow-multiplier: 0.75;
+    --particle-opacity: 0.5;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .scroll-animation {
+        animation: none !important;
+    }
+}
+
+:root {
+    /* Performance Variables */
+    --blur-multiplier: 1;
+    --animation-multiplier: 1;
+    --shadow-multiplier: 1;
+    --particle-opacity: 1;
+    
+    /* Dark Purple Color Palette */
+    --primary: #8b5cf6;
+    --primary-dark: #7c3aed;
+    --primary-light: #a78bfa;
+    --accent: #c084fc;
+    --accent-2: #e879f9;
+}
+
 /* Enhanced Glass Morphism Background */
 .glass-background {
     position: fixed;
