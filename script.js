@@ -1,8 +1,153 @@
-// Enhanced Atomic Hub Script with Ultra-Smooth macOS-style Animations
+// Enhanced Atomic Hub Script with Performance Optimization
 
-// Load GSAP first
+// Performance Detection and Settings
+const PerformanceManager = {
+    isLowEnd: false,
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    
+    // Performance settings
+    settings: {
+        high: {
+            particleCount: 120,
+            blurAmount: 40,
+            animationsEnabled: true,
+            complexEffects: true,
+            parallaxEnabled: true,
+            glowEffects: true
+        },
+        medium: {
+            particleCount: 60,
+            blurAmount: 20,
+            animationsEnabled: true,
+            complexEffects: false,
+            parallaxEnabled: true,
+            glowEffects: false
+        },
+        low: {
+            particleCount: 30,
+            blurAmount: 10,
+            animationsEnabled: false,
+            complexEffects: false,
+            parallaxEnabled: false,
+            glowEffects: false
+        }
+    },
+    
+    currentSettings: null,
+    
+    init() {
+        this.detectPerformance();
+        this.applySettings();
+        this.setupAdaptiveQuality();
+    },
+    
+    detectPerformance() {
+        // Check for low-end device indicators
+        const memory = navigator.deviceMemory || 4;
+        const cores = navigator.hardwareConcurrency || 4;
+        
+        // Simple performance detection
+        if (this.isMobile || memory <= 4 || cores <= 2 || this.prefersReducedMotion) {
+            this.isLowEnd = true;
+        }
+        
+        // Check GPU
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            if (debugInfo) {
+                const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                // Check for integrated/low-end GPUs
+                if (/Intel|Mobile|Integrated/i.test(renderer)) {
+                    this.isLowEnd = true;
+                }
+            }
+        }
+        
+        // Set performance tier
+        if (this.isLowEnd) {
+            this.currentSettings = this.settings.low;
+        } else if (this.isMobile) {
+            this.currentSettings = this.settings.medium;
+        } else {
+            this.currentSettings = this.settings.high;
+        }
+    },
+    
+    applySettings() {
+        const root = document.documentElement;
+        
+        if (this.isLowEnd) {
+            root.classList.add('low-performance');
+            // Disable heavy effects via CSS
+            root.style.setProperty('--blur-amount', '10px');
+            root.style.setProperty('--animation-duration', '0s');
+        } else if (this.isMobile) {
+            root.classList.add('medium-performance');
+            root.style.setProperty('--blur-amount', '20px');
+        }
+        
+        // Disable animations if reduced motion is preferred
+        if (this.prefersReducedMotion) {
+            root.classList.add('reduced-motion');
+        }
+    },
+    
+    setupAdaptiveQuality() {
+        // Monitor FPS and adjust quality dynamically
+        let frameCount = 0;
+        let lastTime = performance.now();
+        let lowFPSCount = 0;
+        
+        const checkFPS = () => {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime >= lastTime + 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                frameCount = 0;
+                lastTime = currentTime;
+                
+                // If FPS is consistently low, reduce quality
+                if (fps < 30) {
+                    lowFPSCount++;
+                    if (lowFPSCount > 3 && this.currentSettings !== this.settings.low) {
+                        console.log('Low FPS detected, reducing quality');
+                        this.currentSettings = this.settings.low;
+                        this.applySettings();
+                        // Reduce particle count if particle system exists
+                        if (window.particleSystem) {
+                            window.particleSystem.reduceParticles();
+                        }
+                    }
+                } else {
+                    lowFPSCount = 0;
+                }
+            }
+            
+            if (!this.isLowEnd) {
+                requestAnimationFrame(checkFPS);
+            }
+        };
+        
+        // Only monitor FPS on non-low-end devices
+        if (!this.isLowEnd) {
+            requestAnimationFrame(checkFPS);
+        }
+    }
+};
+
+// Load GSAP with performance check
 function loadGSAP() {
     return new Promise((resolve) => {
+        // Skip GSAP on very low-end devices
+        if (PerformanceManager.isLowEnd) {
+            resolve();
+            return;
+        }
+        
         if (typeof gsap !== 'undefined') {
             resolve();
             return;
@@ -10,386 +155,262 @@ function loadGSAP() {
         
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
-        script.onload = () => {
-            const scrollScript = document.createElement('script');
-            scrollScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js';
-            scrollScript.onload = resolve;
-            document.head.appendChild(scrollScript);
-        };
+        script.onload = resolve;
+        script.onerror = resolve; // Continue even if GSAP fails to load
         document.head.appendChild(script);
     });
 }
 
-// Initialize after GSAP is loaded
+// Initialize after DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
+    // Initialize performance manager first
+    PerformanceManager.init();
+    
     await loadGSAP();
     
-    initEnhancedCursor();
-    initEnhancedBootAnimation();
-    initSmoothScrollEffects();
-    initEnhancedHeroAnimations();
-    initEnhancedParticleCanvas();
+    // Initialize components based on performance
+    if (!PerformanceManager.isLowEnd) {
+        initOptimizedCursor();
+        initOptimizedParticleCanvas();
+    }
     
-    // Load data only once
+    initOptimizedBootAnimation();
+    initOptimizedScrollEffects();
+    initOptimizedHeroAnimations();
+    
+    // Load data
     loadDataAndInitialize();
     
     initMobileMenu();
-    initAdvancedInteractions();
+    initOptimizedInteractions();
 });
 
-// Enhanced Custom Cursor with Smoother Trail Effect
-function initEnhancedCursor() {
+// Optimized Custom Cursor
+function initOptimizedCursor() {
     const cursor = document.getElementById('cursorOrb');
     
-    if (window.matchMedia("(pointer: fine)").matches) {
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let velocityX = 0, velocityY = 0;
-        
-        // Mouse position tracking with velocity
-        document.addEventListener('mousemove', (e) => {
-            const deltaX = e.clientX - mouseX;
-            const deltaY = e.clientY - mouseY;
-            
-            velocityX = deltaX;
-            velocityY = deltaY;
-            
+    if (!cursor || !window.matchMedia("(pointer: fine)").matches) {
+        if (cursor) cursor.style.display = 'none';
+        return;
+    }
+    
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let rafId = null;
+    
+    // Throttled mouse tracking
+    let moveTimer;
+    document.addEventListener('mousemove', (e) => {
+        clearTimeout(moveTimer);
+        moveTimer = setTimeout(() => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-        });
+        }, 16); // ~60fps
+    });
+    
+    // Optimized cursor animation
+    function animateCursor() {
+        const dx = mouseX - cursorX;
+        const dy = mouseY - cursorY;
         
-        // Ultra-smooth cursor animation with spring physics
-        function animateCursor() {
-            const springFactor = 0.15;
-            const dampingFactor = 0.85;
-            
-            const distX = mouseX - cursorX;
-            const distY = mouseY - cursorY;
-            
-            const accX = distX * springFactor;
-            const accY = distY * springFactor;
-            
-            velocityX = (velocityX + accX) * dampingFactor;
-            velocityY = (velocityY + accY) * dampingFactor;
-            
-            cursorX += velocityX;
-            cursorY += velocityY;
-            
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            
-            // Add subtle rotation based on velocity
-            const rotation = (velocityX * 0.5);
-            cursor.style.transform = `rotate(${rotation}deg)`;
-            
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
+        cursorX += dx * 0.2;
+        cursorY += dy * 0.2;
         
-        // Enhanced hover effects with smooth transitions
-        const interactiveElements = document.querySelectorAll(
-            'a, button, .feature-card, .benefit-card, .pricing-card, .testimonial-card, .faq-item, .nav-link, input, textarea'
-        );
+        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
         
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
-                el.style.transform = 'scale(1.05)';
-                el.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
-                el.style.transform = 'scale(1)';
-            });
-        });
-        
-        // Enhanced click effect
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.7)';
-        });
-        
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
-        });
-    } else {
-        cursor.style.display = 'none';
+        rafId = requestAnimationFrame(animateCursor);
     }
-}
-
-// Enhanced Boot Animation with Ultra-Smooth Matrix Effect
-function initEnhancedBootAnimation() {
-    const bootScreen = document.getElementById('bootScreen');
-    const bootStatus = document.querySelector('.boot-status');
-    const bootText = document.querySelector('.boot-text');
-    const matrixDots = document.querySelectorAll('.matrix-dot');
     
-    // Add blur reveal class
-    setTimeout(() => {
-        bootText.classList.add('blur-reveal');
-        bootStatus.classList.add('blur-reveal');
-    }, 100);
+    animateCursor();
     
-    // Status messages with smooth transitions
-    const statusMessages = [
-        'Initializing Quantum Core...',
-        'Loading Glass Engine...',
-        'Establishing Neural Link...',
-        'Calibrating Systems...',
-        'Welcome to Atomic Hub'
-    ];
+    // Simplified hover effects
+    const interactiveElements = document.querySelectorAll('a, button');
     
-    let messageIndex = 0;
-    const statusInterval = setInterval(() => {
-        if (messageIndex < statusMessages.length) {
-            bootStatus.style.opacity = '0';
-            bootStatus.style.filter = 'blur(20px)';
-            
-            setTimeout(() => {
-                bootStatus.textContent = statusMessages[messageIndex];
-                bootStatus.style.opacity = '1';
-                bootStatus.style.filter = 'blur(0)';
-            }, 1);
-            
-            messageIndex++;
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+    
+    // Cleanup on page hide
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && rafId) {
+            cancelAnimationFrame(rafId);
+        } else if (!document.hidden) {
+            rafId = requestAnimationFrame(animateCursor);
         }
-    }, 1);
-    
-    // Enhanced hide boot screen
-    setTimeout(() => {
-        clearInterval(statusInterval);
-        bootScreen.classList.add('hidden');
-        
-        // Start page animations
-        setTimeout(() => {
-            animatePageContent();
-        }, 1);
-    }, 1);
+    });
 }
 
-// Animate all page content with enhanced blur and stagger
+// Optimized Boot Animation
+function initOptimizedBootAnimation() {
+    const bootScreen = document.getElementById('bootScreen');
+    
+    // Skip boot animation on low-end devices
+    if (PerformanceManager.isLowEnd) {
+        bootScreen.classList.add('hidden');
+        setTimeout(animatePageContent, 100);
+        return;
+    }
+    
+    // Simplified boot animation
+    setTimeout(() => {
+        bootScreen.classList.add('hidden');
+        animatePageContent();
+    }, 1500);
+}
+
+// Optimized page content animation
 function animatePageContent() {
-    // Animate navbar
     const navbar = document.querySelector('.navbar');
     navbar.classList.add('visible');
     
-    // Animate nav links with stagger
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach((link, index) => {
-        link.style.setProperty('--i', index);
-    });
-    
-    // Animate hero content
+    // Use CSS animations instead of JS for blur elements
     const blurElements = document.querySelectorAll('.blur-load');
-    blurElements.forEach((el) => {
-        const delay = el.dataset.delay || 0;
-        el.style.setProperty('--delay', delay);
-        
-        setTimeout(() => {
-            el.classList.add('visible');
-        }, delay * 1000);
-    });
     
-    // Start hero animations
+    if (PerformanceManager.isLowEnd) {
+        // Instant show on low-end devices
+        blurElements.forEach(el => el.classList.add('visible'));
+    } else {
+        // Staggered animation on capable devices
+        blurElements.forEach((el, index) => {
+            setTimeout(() => el.classList.add('visible'), index * 100);
+        });
+    }
+    
+    // Start animations
     setTimeout(() => {
-        startEnhancedTypingAnimation();
+        if (!PerformanceManager.isLowEnd) {
+            startOptimizedTypingAnimation();
+        }
         animateHeroStats();
-    }, 800);
+    }, 500);
 }
 
-// Enhanced Particle Canvas with Advanced Connection Lines
-function initEnhancedParticleCanvas() {
+// Optimized Particle System
+let particleSystem = null;
+
+function initOptimizedParticleCanvas() {
     const canvas = document.getElementById('particleCanvas');
     if (!canvas) return;
     
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
     
     const particles = [];
-    const particleCount = window.innerWidth > 768 ? 120 : 60;
-    const connectionDistance = 180;
-    let mouseX = 0;
-    let mouseY = 0;
-    let time = 0;
+    const particleCount = PerformanceManager.currentSettings.particleCount;
+    const connectionDistance = PerformanceManager.isMobile ? 120 : 150;
     
-    // Enhanced mouse tracking with smooth interpolation
-    const mouse = {
-        x: 0,
-        y: 0,
-        targetX: 0,
-        targetY: 0
-    };
-    
-    window.addEventListener('mousemove', (e) => {
-        mouse.targetX = e.clientX;
-        mouse.targetY = e.clientY;
-    });
-    
-    class EnhancedParticle {
+    class OptimizedParticle {
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.6;
-            this.speedY = (Math.random() - 0.5) * 0.6;
-            this.opacity = Math.random() * 0.6 + 0.3;
-            this.pulseSpeed = Math.random() * 0.02 + 0.01;
-            this.pulsePhase = Math.random() * Math.PI * 2;
-            this.color = Math.random() > 0.5 ? '139, 92, 246' : '232, 121, 249';
-            this.orbitRadius = Math.random() * 50 + 20;
-            this.orbitSpeed = Math.random() * 0.02 + 0.01;
-            this.orbitPhase = Math.random() * Math.PI * 2;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.opacity = Math.random() * 0.5 + 0.3;
         }
         
         update() {
-            // Smooth mouse interpolation
-            mouse.x += (mouse.targetX - mouse.x) * 0.1;
-            mouse.y += (mouse.targetY - mouse.y) * 0.1;
+            this.x += this.speedX;
+            this.y += this.speedY;
             
-            // Orbital movement
-            this.orbitPhase += this.orbitSpeed;
-            const orbitX = Math.cos(this.orbitPhase) * this.orbitRadius * 0.1;
-            const orbitY = Math.sin(this.orbitPhase) * this.orbitRadius * 0.1;
-            
-            // Base movement with orbit
-            this.x += this.speedX + orbitX;
-            this.y += this.speedY + orbitY;
-            
-            // Enhanced mouse interaction with smooth attraction/repulsion
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 150) {
-                const force = (150 - distance) / 150;
-                const angle = Math.atan2(dy, dx);
-                
-                // Smooth repulsion with easing
-                this.x -= Math.cos(angle) * force * 3 * (1 - force);
-                this.y -= Math.sin(angle) * force * 3 * (1 - force);
-            }
-            
-            // Smooth edge wrapping
-            const margin = 50;
-            if (this.x > width + margin) {
-                this.x = -margin;
-                this.y = Math.random() * height;
-            }
-            if (this.x < -margin) {
-                this.x = width + margin;
-                this.y = Math.random() * height;
-            }
-            if (this.y > height + margin) {
-                this.y = -margin;
-                this.x = Math.random() * width;
-            }
-            if (this.y < -margin) {
-                this.y = height + margin;
-                this.x = Math.random() * width;
-            }
-            
-            // Smooth pulse effect
-            this.pulsePhase += this.pulseSpeed;
-            this.currentOpacity = this.opacity + Math.sin(this.pulsePhase) * 0.3;
-            this.currentSize = this.size + Math.sin(this.pulsePhase * 2) * 0.5;
+            // Simple boundary check
+            if (this.x > width) this.x = 0;
+            if (this.x < 0) this.x = width;
+            if (this.y > height) this.y = 0;
+            if (this.y < 0) this.y = height;
         }
         
         draw() {
-            // Main particle with gradient
-            const gradient = ctx.createRadialGradient(
-                this.x, this.y, 0,
-                this.x, this.y, this.currentSize * 2
-            );
-            gradient.addColorStop(0, `rgba(${this.color}, ${this.currentOpacity})`);
-            gradient.addColorStop(1, `rgba(${this.color}, 0)`);
-            
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = `rgba(139, 92, 246, ${this.opacity})`;
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.currentSize * 2, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Inner glow
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity * 0.8})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.currentSize * 0.5, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Outer glow effect
-            const glowGradient = ctx.createRadialGradient(
-                this.x, this.y, 0,
-                this.x, this.y, this.currentSize * 8
-            );
-            glowGradient.addColorStop(0, `rgba(${this.color}, ${this.currentOpacity * 0.3})`);
-            glowGradient.addColorStop(1, `rgba(${this.color}, 0)`);
-            
-            ctx.fillStyle = glowGradient;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.currentSize * 8, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
         }
     }
     
     // Create particles
     for (let i = 0; i < particleCount; i++) {
-        particles.push(new EnhancedParticle());
+        particles.push(new OptimizedParticle());
     }
     
-    function animate() {
-        ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
-        ctx.fillRect(0, 0, width, height);
+    let animationId;
+    let lastTime = 0;
+    const targetFPS = 30; // Lower FPS for better performance
+    const frameInterval = 1000 / targetFPS;
+    
+    function animate(currentTime) {
+        const deltaTime = currentTime - lastTime;
         
-        time += 0.01;
-        
-        // Update and draw particles
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-        
-        // Enhanced connections with gradient and glow
-        particles.forEach((a, index) => {
-            particles.slice(index + 1).forEach(b => {
-                const distance = Math.hypot(a.x - b.x, a.y - b.y);
-                if (distance < connectionDistance) {
-                    const opacity = Math.pow(1 - distance / connectionDistance, 2) * 0.4;
-                    
-                    // Create gradient for connection line
-                    const gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-                    gradient.addColorStop(0, `rgba(${a.color}, ${opacity})`);
-                    gradient.addColorStop(0.5, `rgba(255, 255, 255, ${opacity * 0.5})`);
-                    gradient.addColorStop(1, `rgba(${b.color}, ${opacity})`);
-                    
-                    // Draw connection with glow
-                    ctx.strokeStyle = gradient;
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    ctx.moveTo(a.x, a.y);
-                    ctx.lineTo(b.x, b.y);
-                    ctx.stroke();
-                    
-                    // Add glow to connection
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`;
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
-                }
+        if (deltaTime > frameInterval) {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
             });
-        });
+            
+            // Simple connections (only if not low-end)
+            if (!PerformanceManager.isLowEnd && particles.length < 50) {
+                ctx.strokeStyle = 'rgba(139, 92, 246, 0.1)';
+                ctx.lineWidth = 1;
+                
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < connectionDistance) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            lastTime = currentTime;
+        }
         
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
     }
     
-    animate();
+    animate(0);
     
-    // Smooth resize handler
-    window.addEventListener('resize', debounce(() => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    }, 250));
+    // Optimized resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }, 300);
+    });
+    
+    // Pause when page is hidden
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            cancelAnimationFrame(animationId);
+        } else {
+            animationId = requestAnimationFrame(animate);
+        }
+    });
+    
+    // Expose particle system for dynamic quality adjustment
+    window.particleSystem = {
+        reduceParticles: () => {
+            const reduceBy = Math.floor(particles.length / 2);
+            particles.splice(0, reduceBy);
+        }
+    };
 }
 
-// Enhanced Smooth Scroll Effects with Parallax
-function initSmoothScrollEffects() {
+// Optimized Smooth Scroll
+function initOptimizedScrollEffects() {
     const navbar = document.querySelector('.navbar');
     let lastScroll = 0;
     let ticking = false;
@@ -397,37 +418,42 @@ function initSmoothScrollEffects() {
     function updateScroll() {
         const currentScroll = window.pageYOffset;
         
-        // Navbar morphing with blur
+        // Navbar state
         if (currentScroll > 100) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
         
-        // Enhanced parallax for hero
-        const heroContent = document.querySelector('.hero-content');
-        if (heroContent && currentScroll < window.innerHeight) {
-            const opacity = Math.max(0, 1 - (currentScroll / 600));
-            const blur = Math.min(30, currentScroll / 20);
-            const scale = 1 - (currentScroll / 2000);
-            
-            heroContent.style.opacity = opacity;
-            heroContent.style.filter = `blur(${blur}px)`;
-            heroContent.style.transform = `translateY(${currentScroll * 0.4}px) scale(${scale})`;
+        // Parallax only on capable devices
+        if (!PerformanceManager.isLowEnd && PerformanceManager.currentSettings.parallaxEnabled) {
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent && currentScroll < window.innerHeight) {
+                const translateY = currentScroll * 0.4;
+                const opacity = Math.max(0, 1 - (currentScroll / 600));
+                
+                heroContent.style.transform = `translate3d(0, ${translateY}px, 0)`;
+                heroContent.style.opacity = opacity;
+            }
         }
         
         lastScroll = currentScroll;
         ticking = false;
     }
     
+    // Throttled scroll handler
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        if (!ticking) {
-            requestAnimationFrame(updateScroll);
-            ticking = true;
-        }
-    });
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            if (!ticking) {
+                requestAnimationFrame(updateScroll);
+                ticking = true;
+            }
+        }, 10);
+    }, { passive: true });
     
-    // Enhanced smooth scrolling
+    // Smooth anchor scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -435,43 +461,31 @@ function initSmoothScrollEffects() {
             if (target) {
                 const offsetTop = target.offsetTop - 100;
                 
-                // Add blur effect during scroll
-                document.body.style.transition = 'filter 0.3s ease';
-                document.body.style.filter = 'blur(2px)';
-                
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-                
-                setTimeout(() => {
-                    document.body.style.filter = 'blur(0)';
-                }, 300);
+                if (PerformanceManager.isLowEnd) {
+                    // Instant scroll on low-end devices
+                    window.scrollTo(0, offsetTop);
+                } else {
+                    // Smooth scroll on capable devices
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
             }
         });
     });
 }
 
-// Enhanced Hero Animations
-function initEnhancedHeroAnimations() {
-    // Advanced typing effect
-    startEnhancedTypingAnimation();
-    
-    // Animated stats with spring physics
+// Optimized Hero Animations
+function initOptimizedHeroAnimations() {
+    if (!PerformanceManager.isLowEnd) {
+        startOptimizedTypingAnimation();
+    }
     animateHeroStats();
-    
-    // Floating animation for hero elements
-    gsap.to('.hero-badge', {
-        y: -10,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut"
-    });
 }
 
-// Enhanced typing animation with smooth blur
-function startEnhancedTypingAnimation() {
+// Optimized Typing Animation
+function startOptimizedTypingAnimation() {
     const typingText = document.querySelector('.typing-text');
     if (!typingText) return;
     
@@ -486,7 +500,6 @@ function startEnhancedTypingAnimation() {
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    let typingSpeed = 100;
     
     function typeEffect() {
         const currentPhrase = phrases[phraseIndex];
@@ -494,22 +507,14 @@ function startEnhancedTypingAnimation() {
         if (isDeleting) {
             typingText.textContent = currentPhrase.substring(0, charIndex - 1);
             charIndex--;
-            typingSpeed = 50;
         } else {
             typingText.textContent = currentPhrase.substring(0, charIndex + 1);
             charIndex++;
-            typingSpeed = 100;
         }
         
-        // Smooth character change effect
-        gsap.to(typingText, {
-            filter: 'blur(0)',
-            duration: 0.1,
-            ease: "power2.out"
-        });
-        
-        // Apply typing class
         typingText.classList.add('typing');
+        
+        let typingSpeed = isDeleting ? 50 : 100;
         
         if (!isDeleting && charIndex === currentPhrase.length) {
             isDeleting = true;
@@ -518,17 +523,6 @@ function startEnhancedTypingAnimation() {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
             typingSpeed = 500;
-            
-            // Phrase change effect
-            gsap.fromTo(typingText, {
-                filter: 'blur(20px)',
-                scale: 0.9
-            }, {
-                filter: 'blur(0)',
-                scale: 1,
-                duration: 0.5,
-                ease: "power3.out"
-            });
         }
         
         setTimeout(typeEffect, typingSpeed);
@@ -537,115 +531,86 @@ function startEnhancedTypingAnimation() {
     setTimeout(typeEffect, 1000);
 }
 
-// Animate hero stats with enhanced effects
+// Optimized stats animation
 function animateHeroStats() {
-    const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px'
-    };
+    const statNumbers = document.querySelectorAll('.stat-number');
     
-    const statsObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const statNumbers = entry.target.querySelectorAll('.stat-number');
-                statNumbers.forEach((stat, index) => {
-                    setTimeout(() => {
-                        animateValueWithEnhancedBlur(stat);
-                    }, index * 200);
-                });
-                statsObserver.unobserve(entry.target);
+                const element = entry.target;
+                if (PerformanceManager.isLowEnd) {
+                    // Instant value on low-end devices
+                    const target = parseFloat(element.dataset.target);
+                    const isDecimal = element.dataset.decimal === 'true';
+                    element.textContent = isDecimal ? target.toFixed(1) + '%' : Math.floor(target).toLocaleString();
+                } else {
+                    animateValue(element);
+                }
+                observer.unobserve(element);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.5, rootMargin: '0px' });
     
-    const heroStats = document.querySelector('.hero-stats');
-    if (heroStats) {
-        statsObserver.observe(heroStats);
-    }
+    statNumbers.forEach(stat => observer.observe(stat));
 }
 
-// Enhanced counter animation with ultra-smooth blur effect
-function animateValueWithEnhancedBlur(element) {
+// Simplified counter animation
+function animateValue(element) {
     const target = parseFloat(element.dataset.target);
     const isDecimal = element.dataset.decimal === 'true';
-    const duration = 2500;
+    const duration = 2000;
     const start = 0;
-    const startTime = Date.now();
+    const startTime = performance.now();
     
-    // Initial blur
-    element.style.filter = 'blur(20px)';
-    element.style.transform = 'scale(0.8)';
-    element.style.opacity = '0';
-    element.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
-    
-    // Start animation
-    setTimeout(() => {
-        element.style.filter = 'blur(0)';
-        element.style.transform = 'scale(1)';
-        element.style.opacity = '1';
-    }, 100);
-    
-    function updateValue() {
-        const currentTime = Date.now();
+    function updateValue(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Easing function
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const current = start + (target - start) * easeOutQuart;
+        // Simple easing
+        const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+        const current = start + (target - start) * easeOutQuad;
+        
+        if (isDecimal) {
+            element.textContent = current.toFixed(1) + '%';
+        } else {
+            element.textContent = Math.floor(current).toLocaleString();
+        }
         
         if (progress < 1) {
-            if (isDecimal) {
-                element.textContent = current.toFixed(1) + '%';
-            } else {
-                element.textContent = Math.floor(current).toLocaleString();
-            }
             requestAnimationFrame(updateValue);
-        } else {
-            if (isDecimal) {
-                element.textContent = target.toFixed(1) + '%';
-            } else {
-                element.textContent = Math.floor(target).toLocaleString();
-            }
         }
     }
     
-    updateValue();
+    requestAnimationFrame(updateValue);
 }
 
-// Enhanced Blur Intersection Observer with Smooth Animations
-function initBlurIntersectionObservers() {
+// Optimized Intersection Observer
+function initOptimizedObservers() {
     const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
+        rootMargin: '50px'
     };
     
-    const blurObserver = new IntersectionObserver((entries) => {
+    // Batch observe elements
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                const element = entry.target;
-                const rect = element.getBoundingClientRect();
-                const viewportHeight = window.innerHeight;
-                const delay = Math.min((rect.top / viewportHeight) * 0.3, 0.5);
-                
-                // Add staggered delay
-                setTimeout(() => {
-                    element.classList.add('visible');
-                }, delay * 1000);
-                
-                blurObserver.unobserve(element);
+                // Add visible class with minimal delay
+                requestAnimationFrame(() => {
+                    entry.target.classList.add('visible');
+                });
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
     
-    // Observe all elements that need blur animation
+    // Observe all animated elements
     const animateElements = document.querySelectorAll(
         '.feature-card, .benefit-card, .pricing-card, .faq-item, .blur-load:not(.visible)'
     );
     
-    animateElements.forEach(el => {
-        blurObserver.observe(el);
-    });
+    animateElements.forEach(el => observer.observe(el));
 }
 
 // Load data and initialize components
@@ -655,64 +620,38 @@ async function loadDataAndInitialize() {
     if (dataLoaded) return;
     dataLoaded = true;
     
-    clearAllContent();
-    
     try {
         const response = await fetch('database.json');
-        if (!response.ok) {
-            throw new Error('Database file not found');
-        }
         const data = await response.json();
         
         initFeatures(data.features);
         initBenefits(data.benefits);
         initPricing(data.pricing);
-        initEnhancedTestimonials(data.testimonials);
+        initOptimizedTestimonials(data.testimonials);
         initFAQ(data.faq);
         
-        // Reinitialize observers after content load
-        setTimeout(() => {
-            initBlurIntersectionObservers();
-            initAdvancedInteractions();
-        }, 100);
+        // Initialize observers after content load
+        requestAnimationFrame(() => {
+            initOptimizedObservers();
+        });
     } catch (error) {
-        console.error('Error loading data, using default:', error);
+        console.error('Error loading data:', error);
+        // Use default data as fallback
         useDefaultData();
-        
-        setTimeout(() => {
-            initBlurIntersectionObservers();
-            initAdvancedInteractions();
-        }, 100);
     }
 }
 
-// Clear all dynamic content
-function clearAllContent() {
-    const elements = [
-        'featuresGrid',
-        'benefitsGrid',
-        'pricingGrid',
-        'testimonialsTrack',
-        'faqGrid'
-    ];
-    
-    elements.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.innerHTML = '';
-        }
-    });
-}
-
-// Initialize Features with enhanced animations
+// Initialize Features
 function initFeatures(features) {
     const grid = document.getElementById('featuresGrid');
     if (!grid || !features) return;
     
+    const fragment = document.createDocumentFragment();
+    
     features.forEach((feature, index) => {
         const card = document.createElement('div');
         card.className = 'feature-card';
-        card.style.animationDelay = `${index * 0.15}s`;
+        card.style.animationDelay = `${index * 0.1}s`;
         
         card.innerHTML = `
             <div class="feature-icon">${feature.icon}</div>
@@ -720,31 +659,23 @@ function initFeatures(features) {
             <p>${feature.description}</p>
         `;
         
-        grid.appendChild(card);
-        
-        // Add hover interaction
-        card.addEventListener('mouseenter', () => {
-            const icon = card.querySelector('.feature-icon');
-            icon.style.transform = 'scale(1.2) rotate(5deg)';
-            icon.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            const icon = card.querySelector('.feature-icon');
-            icon.style.transform = 'scale(1) rotate(0deg)';
-        });
+        fragment.appendChild(card);
     });
+    
+    grid.appendChild(fragment);
 }
 
-// Initialize Benefits with enhanced animations
+// Initialize Benefits
 function initBenefits(benefits) {
     const grid = document.getElementById('benefitsGrid');
     if (!grid || !benefits) return;
     
+    const fragment = document.createDocumentFragment();
+    
     benefits.forEach((benefit, index) => {
         const card = document.createElement('div');
         card.className = 'benefit-card';
-        card.style.animationDelay = `${index * 0.15}s`;
+        card.style.animationDelay = `${index * 0.1}s`;
         
         const pointsList = benefit.points.map(point => 
             `<li>${point}</li>`
@@ -756,19 +687,23 @@ function initBenefits(benefits) {
             <ul>${pointsList}</ul>
         `;
         
-        grid.appendChild(card);
+        fragment.appendChild(card);
     });
+    
+    grid.appendChild(fragment);
 }
 
-// Initialize Pricing with enhanced 3D tilt effect
+// Initialize Pricing
 function initPricing(pricing) {
     const grid = document.getElementById('pricingGrid');
     if (!grid || !pricing) return;
     
+    const fragment = document.createDocumentFragment();
+    
     pricing.forEach((plan, index) => {
         const card = document.createElement('div');
         card.className = plan.featured ? 'pricing-card featured' : 'pricing-card';
-        card.style.animationDelay = `${index * 0.2}s`;
+        card.style.animationDelay = `${index * 0.1}s`;
         
         const featuresList = plan.features.map(feature => 
             `<li class="pricing-feature">
@@ -778,9 +713,7 @@ function initPricing(pricing) {
         ).join('');
         
         card.innerHTML = `
-            ${plan.featured ? '<div class="pricing-border-animation"></div>' : ''}
             ${plan.featured ? '<div class="pricing-badge">MOST POPULAR</div>' : ''}
-            ${plan.featured ? '<div class="pricing-sparkle"></div>' : ''}
             <div class="pricing-name">${plan.name}</div>
             <div class="pricing-price">${plan.price}</div>
             <div class="pricing-period">${plan.period}</div>
@@ -788,121 +721,100 @@ function initPricing(pricing) {
             <button class="btn-pricing" onclick="window.open('https://discord.gg/getsades', '_blank')">${plan.cta || 'Get Started'}</button>
         `;
         
-        // Enhanced 3D tilt effect
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
+        // Simplified hover effect for low-end devices
+        if (!PerformanceManager.isLowEnd) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
             
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            
-            if (plan.featured) {
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-            }
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-            
-            if (plan.featured) {
-                card.style.transform = 'scale(1.05)';
-            } else {
+            card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
-            }
-            
-            setTimeout(() => {
-                card.style.transition = '';
-            }, 500);
-        });
+            });
+        }
         
-        grid.appendChild(card);
+        fragment.appendChild(card);
     });
+    
+    grid.appendChild(fragment);
 }
 
-// Enhanced Testimonials with Smooth Infinite Scroll
-function initEnhancedTestimonials(testimonials) {
+// Optimized Testimonials
+function initOptimizedTestimonials(testimonials) {
     const track = document.getElementById('testimonialsTrack');
     if (!track || !testimonials) return;
     
-    track.innerHTML = '';
+    const fragment = document.createDocumentFragment();
     
-    // Create testimonial cards
-    const createTestimonialCard = (testimonial) => {
-        const card = document.createElement('div');
-        card.className = 'testimonial-card';
-        
-        const stars = '★'.repeat(testimonial.rating);
-        
-        card.innerHTML = `
-            <div class="testimonial-quote">"</div>
-            <div class="testimonial-header">
-                <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar" loading="lazy">
-                <div class="testimonial-info">
-                    <h4>${testimonial.name}</h4>
-                    <div class="testimonial-role">${testimonial.role}</div>
-                    <div class="testimonial-date">${testimonial.date}</div>
-                </div>
-            </div>
-            <div class="testimonial-content">
-                "${testimonial.text}"
-            </div>
-            <div class="testimonial-rating">
-                ${stars.split('').map(() => '<span class="star">★</span>').join('')}
-            </div>
-        `;
-        
-        return card;
-    };
+    // Create fewer duplicates on mobile
+    const sets = PerformanceManager.isMobile ? 2 : 3;
     
-    // Create multiple sets for smooth infinite scroll
-    const sets = 3;
     for (let i = 0; i < sets; i++) {
         testimonials.forEach(testimonial => {
-            track.appendChild(createTestimonialCard(testimonial));
+            const card = document.createElement('div');
+            card.className = 'testimonial-card';
+            
+            card.innerHTML = `
+                <div class="testimonial-quote">"</div>
+                <div class="testimonial-header">
+                    <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar" loading="lazy">
+                    <div class="testimonial-info">
+                        <h4>${testimonial.name}</h4>
+                        <div class="testimonial-role">${testimonial.role}</div>
+                        <div class="testimonial-date">${testimonial.date}</div>
+                    </div>
+                </div>
+                <div class="testimonial-content">
+                    "${testimonial.text}"
+                </div>
+                <div class="testimonial-rating">
+                    ${'★'.repeat(testimonial.rating).split('').map(() => '<span class="star">★</span>').join('')}
+                </div>
+            `;
+            
+            fragment.appendChild(card);
         });
     }
     
-    // Calculate animation duration based on content
+    track.appendChild(fragment);
+    
+    // Adjust animation speed for performance
     const cardWidth = 450;
     const totalWidth = testimonials.length * cardWidth;
-    const duration = totalWidth / 50;
+    const duration = totalWidth / (PerformanceManager.isLowEnd ? 30 : 50);
     
     track.style.animationDuration = `${duration}s`;
     
-    // Enhanced pause on hover with smooth transition
-    track.addEventListener('mouseenter', () => {
-        track.style.animationPlayState = 'paused';
-    });
-    
-    track.addEventListener('mouseleave', () => {
-        track.style.animationPlayState = 'running';
-    });
-    
-    // Touch support for mobile
-    let touchStart = 0;
-    track.addEventListener('touchstart', (e) => {
-        touchStart = e.touches[0].clientX;
-        track.style.animationPlayState = 'paused';
-    });
-    
-    track.addEventListener('touchend', () => {
-        track.style.animationPlayState = 'running';
-    });
+    // Pause on hover only on non-touch devices
+    if (!PerformanceManager.isMobile) {
+        track.addEventListener('mouseenter', () => {
+            track.style.animationPlayState = 'paused';
+        });
+        
+        track.addEventListener('mouseleave', () => {
+            track.style.animationPlayState = 'running';
+        });
+    }
 }
 
-// Initialize FAQ with enhanced smooth animations
+// Initialize FAQ
 function initFAQ(faqItems) {
     const grid = document.getElementById('faqGrid');
     if (!grid || !faqItems) return;
     
+    const fragment = document.createDocumentFragment();
+    
     faqItems.forEach((item, index) => {
         const faqElement = document.createElement('div');
         faqElement.className = 'faq-item';
-        faqElement.style.animationDelay = `${index * 0.1}s`;
+        faqElement.style.animationDelay = `${index * 0.05}s`;
         
         faqElement.innerHTML = `
             <div class="faq-question">
@@ -925,10 +837,8 @@ function initFAQ(faqItems) {
             document.querySelectorAll('.faq-item.active').forEach(item => {
                 if (item !== faqElement) {
                     item.classList.remove('active');
-                    const itemAnswer = item.querySelector('.faq-answer');
-                    const itemIcon = item.querySelector('.faq-icon');
-                    itemAnswer.style.maxHeight = '0';
-                    itemIcon.style.transform = 'rotate(0deg)';
+                    item.querySelector('.faq-answer').style.maxHeight = '0';
+                    item.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
                 }
             });
             
@@ -942,19 +852,15 @@ function initFAQ(faqItems) {
                 answer.style.maxHeight = answer.scrollHeight + 'px';
                 icon.style.transform = 'rotate(180deg)';
             }
-            
-            // Add blur effect
-            faqElement.style.filter = 'blur(5px)';
-            setTimeout(() => {
-                faqElement.style.filter = 'blur(0)';
-            }, 150);
         });
         
-        grid.appendChild(faqElement);
+        fragment.appendChild(faqElement);
     });
+    
+    grid.appendChild(fragment);
 }
 
-// Mobile Menu with smooth animations
+// Mobile Menu
 function initMobileMenu() {
     const toggle = document.querySelector('.nav-mobile-toggle');
     const navbar = document.querySelector('.navbar');
@@ -964,82 +870,45 @@ function initMobileMenu() {
     toggle.addEventListener('click', () => {
         navbar.classList.toggle('mobile-open');
         toggle.classList.toggle('active');
-        
-        // Animate mobile menu items
-        if (navbar.classList.contains('mobile-open')) {
-            const links = navbar.querySelectorAll('.nav-link');
-            links.forEach((link, index) => {
-                link.style.opacity = '0';
-                link.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    link.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-                    link.style.opacity = '1';
-                    link.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-        }
     });
 }
 
-// Advanced Interactions
-function initAdvancedInteractions() {
-    // Enhanced Ripple Effect
-    document.addEventListener('click', (e) => {
-        if (e.target.matches('button') || e.target.closest('button')) {
-            const button = e.target.matches('button') ? e.target : e.target.closest('button');
-            
-            const existingRipple = button.querySelector('.ripple');
-            if (existingRipple) {
-                existingRipple.remove();
+// Optimized Interactions
+function initOptimizedInteractions() {
+    // Simple ripple effect only on non-low-end devices
+    if (!PerformanceManager.isLowEnd) {
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('button') || e.target.closest('button')) {
+                const button = e.target.matches('button') ? e.target : e.target.closest('button');
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.5);
+                    pointer-events: none;
+                    left: ${x}px;
+                    top: ${y}px;
+                    transform: scale(0);
+                    animation: rippleEffect 0.6s ease-out;
+                `;
+                
+                button.style.position = 'relative';
+                button.style.overflow = 'hidden';
+                button.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
             }
-            
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.5);
-                pointer-events: none;
-                left: ${x}px;
-                top: ${y}px;
-                transform: scale(0);
-                animation: rippleEffect 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            `;
-            
-            button.style.position = 'relative';
-            button.style.overflow = 'hidden';
-            button.appendChild(ripple);
-            
-            setTimeout(() => ripple.remove(), 600);
-        }
-    });
-    
-    // Magnetic buttons effect
-    const magneticElements = document.querySelectorAll('.btn-hero-primary, .btn-hero-secondary, .btn-cta');
-    
-    magneticElements.forEach(elem => {
-        elem.addEventListener('mousemove', (e) => {
-            const rect = elem.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            elem.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-            elem.style.transition = 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)';
         });
-        
-        elem.addEventListener('mouseleave', () => {
-            elem.style.transform = 'translate(0, 0)';
-            elem.style.transition = 'transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-        });
-    });
+    }
 }
 
 // Default data fallback
@@ -1190,34 +1059,15 @@ function useDefaultData() {
     initFeatures(defaultData.features);
     initBenefits(defaultData.benefits);
     initPricing(defaultData.pricing);
-    initEnhancedTestimonials(defaultData.testimonials);
+    initOptimizedTestimonials(defaultData.testimonials);
     initFAQ(defaultData.faq);
+    
+    requestAnimationFrame(() => {
+        initOptimizedObservers();
+    });
 }
 
-// Utility function: Debounce
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Performance optimization - Debounce resize events
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        // Reinitialize particle canvas on resize
-        initEnhancedParticleCanvas();
-    }, 250);
-});
-
-// Page visibility handling
+// Page visibility handling for performance
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         // Pause animations when page is not visible
